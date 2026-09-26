@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
-import { generateToken, hashPassword, comparePassword, authMiddleware } from '../middleware/auth.js';
+import { authMiddleware } from '../middleware/auth.js';
+import { getSupabaseAdmin, createAuthUser, createAppUser } from '../services/supabase.js';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -33,73 +34,58 @@ router.post('/signup', async (req, res) => {
     const credError = validateCredentials(normalizedEmail, password);
     if (credError) return res.status(400).json({ error: credError });
 
-    const existing = await prisma.user.findUnique({ where: { email: normalizedEmail } });
-    if (existing) return res.status(400).json({ error: 'Email already registered' });
+    // Create the identity in Supabase Auth (handles hashing + JWT issuance).
+    const { data: authData, error: authError } = await createAuthUser(normalizedEmail, password, fullName, role);
+    if (authError) {
+      if (authError.status === 409 || /already/i.test(authError.message)) {
+        return res.status(400).json({ error: 'Email already registered' });
+      }
+      return res.status(400).json({ error: authError.message });
+    }
 
-    const passwordHash = await hashPassword(password);
+    const authUserId = authData?.user?.id;
+    if (!authUserId) return res.status(500).json({ error: 'Signup failed' });
 
-    const user = await prisma.user.create({
-      data: {
-        email: normalizedEmail,
-        passwordHash,
-        role,
-        fullName: (fullName || '').trim().slice(0, 120) || 'User',
-        status: 'pending_approval',
-      },
+    // Mirror minimal user row in our own DB (passwordHash is managed by Supabase).
+    const user = await createAppUser({
+      id: authUserId,
+      email: normalizedEmail,
+      passwordHash: 'SUPABASE_MANAGED',
+      role,
+      fullName: (fullName || '').trim().slice(0, 120) || 'User',
+      status: 'pending_approval',
     });
 
-    if (role === 'student') {
-      let institution = null;
-      if (institutionCode) {
-        institution = await prisma.institution.findUnique({ where: { code: institutionCode } });
-      }
-      await prisma.studentProfile.create({
-        data: {
-          id: user.id,
-          userId: user.id,
-          institutionId: institution?.id,
-          rollNumber: req.body.rollNumber || `ROLL-${Date.now()}`,
-          branch: req.body.branch || 'Computer Science',
-          year: req.body.year || 'Final Year',
-          cgpa: req.body.cgpa || 0,
-        },
+    await createRoleProfile(user, {
+      role,
+      fullName: user.fullName,
+      email: normalizedEmail,
+      institutionCode,
+      companyName,
+      industry,
+      location,
+      tpoName,
+      tpoEmail,
+      reqBody: req.body,
+    });
+
+    // Sign them in immediately (admin createUser auto-confirms the email).
+    const { data: signedIn, error: signInError } = await getSupabaseAdmin().auth.signInWithPassword({
+      email: normalizedEmail,
+      password,
+    });
+
+    if (signInError) {
+      return res.status(201).json({
+        status: 'success',
+        user: { id: user.id, name: user.fullName, email: user.email, role: user.role },
+        message: 'Account created. Please log in.',
       });
     }
-
-    if (role === 'company') {
-      await prisma.companyProfile.create({
-        data: {
-          userId: user.id,
-          name: companyName || fullName,
-          industry: industry || 'Technology',
-          description: req.body.description,
-          headquarters: location || 'India',
-        },
-      });
-    }
-
-    if (role === 'institution') {
-      const code = institutionCode || `INST-${Date.now()}`;
-      const institution = await prisma.institution.create({
-        data: {
-          name: fullName,
-          code,
-          location: location || 'India',
-          tpoName: tpoName || fullName,
-          tpoEmail: normalizedEmail,
-        },
-      });
-      await prisma.user.update({
-        where: { id: user.id },
-        data: { institutionId: institution.id },
-      });
-    }
-
-    const token = generateToken(user);
 
     res.status(201).json({
       status: 'success',
-      token,
+      token: signedIn?.session?.access_token,
       user: { id: user.id, name: user.fullName, email: user.email, role: user.role },
     });
   } catch (error) {
@@ -108,17 +94,74 @@ router.post('/signup', async (req, res) => {
   }
 });
 
+async function createRoleProfile(user, ctx) {
+  const { role } = ctx;
+  if (role === 'student') {
+    let institution = null;
+    if (ctx.institutionCode) {
+      institution = await prisma.institution.findUnique({ where: { code: ctx.institutionCode } });
+    }
+    await prisma.studentProfile.create({
+      data: {
+        id: user.id,
+        userId: user.id,
+        institutionId: institution?.id,
+        rollNumber: ctx.reqBody.rollNumber || `ROLL-${Date.now()}`,
+        branch: ctx.reqBody.branch || 'Computer Science',
+        year: ctx.reqBody.year || 'Final Year',
+        cgpa: ctx.reqBody.cgpa || 0,
+      },
+    });
+  }
+
+  if (role === 'company') {
+    await prisma.companyProfile.create({
+      data: {
+        userId: user.id,
+        name: ctx.companyName || ctx.fullName,
+        industry: ctx.industry || 'Technology',
+        description: ctx.reqBody.description,
+        headquarters: ctx.location || 'India',
+      },
+    });
+  }
+
+  if (role === 'institution') {
+    const code = ctx.institutionCode || `INST-${Date.now()}`;
+    const institution = await prisma.institution.create({
+      data: {
+        name: ctx.fullName,
+        code,
+        location: ctx.location || 'India',
+        tpoName: ctx.tpoName || ctx.fullName,
+        tpoEmail: ctx.email,
+      },
+    });
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { institutionId: institution.id },
+    });
+  }
+}
+
 // POST /api/auth/login
 router.post('/login', async (req, res) => {
   try {
     const { email, password, role } = req.body;
     const normalizedEmail = (email || '').trim().toLowerCase();
 
-    const user = await prisma.user.findUnique({ where: { email: normalizedEmail } });
-    if (!user) return res.status(401).json({ error: 'Invalid credentials' });
+    const { data: sessionData, error: signInError } = await getSupabaseAdmin().auth.signInWithPassword({
+      email: normalizedEmail,
+      password,
+    });
 
-    const valid = await comparePassword(password, user.passwordHash);
-    if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
+    if (signInError || !sessionData?.session) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const authUserId = sessionData.user.id;
+    const user = await prisma.user.findUnique({ where: { id: authUserId } });
+    if (!user) return res.status(401).json({ error: 'Invalid credentials' });
 
     if (role && user.role !== role) {
       return res.status(403).json({ error: `This account is registered as '${user.role}', not '${role}'` });
@@ -128,7 +171,7 @@ router.post('/login', async (req, res) => {
       return res.status(403).json({ error: 'This account has been suspended. Contact support.' });
     }
 
-    const token = generateToken(user);
+    const token = sessionData.session.access_token;
 
     let profileExtra = {};
     if (user.role === 'student') {

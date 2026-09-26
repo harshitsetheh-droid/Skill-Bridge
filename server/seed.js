@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcryptjs';
+import { createAuthUser, createAppUser } from './services/supabase.js';
 
 const prisma = new PrismaClient();
 
@@ -29,17 +29,26 @@ async function main() {
   console.log('All default data cleared.');
 
   // ─── Admin User (Harshit) ────────────────────────────
-  const password = await bcrypt.hash('123456', 12);
+  const email = 'harshitseth.eh@gmail.com';
+  const password = '123456';
 
-  await prisma.user.create({
-    data: {
-      email: 'harshitseth.eh@gmail.com',
-      passwordHash: password,
-      role: 'admin',
-      fullName: 'Harshit',
-      isVerified: true,
-      status: 'active',
-    },
+  // Create identity in Supabase Auth (admin bypasses email confirmation).
+  const { data: authData, error: authError } = await createAuthUser(email, password, 'Harshit', 'admin');
+  if (authError) {
+    console.error('Failed to create Supabase auth user:', authError.message);
+    throw new Error(authError.message);
+  }
+
+  const authUserId = authData?.user?.id;
+  if (!authUserId) throw new Error('Supabase auth user id missing');
+
+  await createAppUser({
+    id: authUserId,
+    email,
+    passwordHash: 'SUPABASE_MANAGED',
+    role: 'admin',
+    fullName: 'Harshit',
+    status: 'active',
   });
 
   console.log('Admin user created: Harshit (harshitseth.eh@gmail.com)');

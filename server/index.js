@@ -16,6 +16,7 @@ import companyRoutes from './routes/company.js';
 import institutionRoutes from './routes/institution.js';
 import adminRoutes from './routes/admin.js';
 import aiRoutes from './routes/ai.js';
+import uploadRoutes from './routes/uploads.js';
 
 dotenv.config();
 
@@ -36,8 +37,8 @@ app.use(
             defaultSrc: ["'self'"],
             scriptSrc: ["'self'", "'unsafe-inline'"],
             styleSrc: ["'self'", "'unsafe-inline'"],
-            imgSrc: ["'self'", 'data:', 'https:'],
-            connectSrc: ["'self'"],
+            imgSrc: ["'self'", 'data:', 'https:', 'https://*.supabase.co'],
+            connectSrc: ["'self'", 'https://*.supabase.co'],
             fontSrc: ["'self'", 'data:'],
             objectSrc: ["'none'"],
             frameAncestors: ["'none'"],
@@ -104,6 +105,7 @@ app.use('/api/company', companyRoutes);
 app.use('/api/tpo', institutionRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/uploads', uploadRoutes);
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const distDir = path.resolve(__dirname, '..', 'dist');

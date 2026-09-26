@@ -1,13 +1,13 @@
 # TalentBridge Backend
 
-Full REST API backend for the TalentBridge campus recruitment platform, built with Express, Prisma, PostgreSQL, JWT auth, and Google Gemini AI.
+Full REST API backend for the TalentBridge campus recruitment platform, built with Express, Prisma, PostgreSQL (Supabase), Supabase Auth, and Google Gemini AI.
 
 ## Tech Stack
 - **Express** - REST API framework
 - **Prisma ORM** - Database layer
-- **PostgreSQL** - Relational database
-- **JWT** - Authentication & sessions
-- **bcryptjs** - Password hashing
+- **Supabase Postgres** - Relational database
+- **Supabase Auth** - Authentication & sessions (JWT)
+- **Supabase Storage** - Resume file uploads
 - **Google Gemini** - AI features (AST analysis, resume parsing, quiz generation)
 
 ## Setup
@@ -18,10 +18,13 @@ npm install
 ```
 
 ### 2. Configure environment
-Edit `.env`:
+Edit `.env` (see `.env.example`):
 ```env
-DATABASE_URL="postgresql://postgres:YOUR_PASSWORD@localhost:5432/talentbridge"
-JWT_SECRET="your-secret-key"
+DATABASE_URL="postgresql://postgres.<REF>:<PASSWORD>@aws-0-<REGION>.pooler.supabase.com:6543/postgres?pgbouncer=true"
+DIRECT_URL="postgresql://postgres.<REF>:<PASSWORD>@aws-0-<REGION>.pooler.supabase.com:5432/postgres"
+SUPABASE_URL="https://<PROJECT_REF>.supabase.co"
+SUPABASE_SERVICE_ROLE_KEY="<service_role_key>"
+SUPABASE_STORAGE_BUCKET="resumes"
 GEMINI_API_KEY="your-gemini-key"
 ```
 
@@ -119,11 +122,11 @@ Database by default starts empty (no sample data). Only the admin user is create
 ```
 server/
 ├── index.js              # Express entry
-├── seed.js               # Demo data seeder
+├── seed.js               # Admin seeder (via Supabase Auth)
 ├── prisma/
 │   └── schema.prisma     # Database schema
 ├── middleware/
-│   └── auth.js           # JWT + role guards
+│   └── auth.js           # Supabase JWT verification + role guards
 ├── routes/               # REST endpoint handlers
 │   ├── auth.js
 │   ├── students.js
@@ -133,7 +136,9 @@ server/
 │   ├── company.js
 │   ├── institution.js
 │   ├── admin.js
-│   └── ai.js
+│   ├── ai.js
+│   └── uploads.js        # Resume uploads (Supabase Storage)
 └── services/
+    ├── supabase.js       # Supabase admin client + auth helpers
     └── gemini.js         # Google Gemini AI integration
 ```
