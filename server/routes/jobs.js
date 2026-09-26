@@ -80,15 +80,28 @@ router.post('/', authMiddleware, roleGuard('company'), async (req, res) => {
   }
 });
 
-// PATCH /api/jobs/:id/tpo-status - TPO approve/reject job
-router.patch('/:id/tpo-status', authMiddleware, roleGuard('institution'), async (req, res) => {
+// PATCH /api/jobs/:id/tpo-status - TPO approve/reject job for own institution (admin allowed)
+router.patch('/:id/tpo-status', authMiddleware, roleGuard('institution', 'admin'), async (req, res) => {
   try {
     const { status } = req.body; // approved | rejected
-    const job = await prisma.internshipJob.update({
+
+    const job = await prisma.internshipJob.findUnique({ where: { id: req.params.id } });
+    if (!job) return res.status(404).json({ error: 'Job not found' });
+
+    if (req.user.role === 'institution') {
+      const institution = await prisma.institution.findFirst({
+        where: { users: { some: { id: req.user.id } } },
+      });
+      if (!institution || job.targetInstitutionId !== institution.id) {
+        return res.status(403).json({ error: 'Insufficient permissions' });
+      }
+    }
+
+    const updated = await prisma.internshipJob.update({
       where: { id: req.params.id },
       data: { tpoApprovalStatus: status },
     });
-    res.json({ job });
+    res.json({ job: updated });
   } catch (error) {
     res.status(500).json({ error: 'Failed to update TPO status' });
   }

@@ -63,8 +63,16 @@ router.post('/feedback', authMiddleware, roleGuard('company'), async (req, res) 
 });
 
 // GET /api/company/feedback/:institutionId
-router.get('/feedback/:institutionId', authMiddleware, async (req, res) => {
+router.get('/feedback/:institutionId', authMiddleware, roleGuard('institution', 'company', 'admin'), async (req, res) => {
   try {
+    if (req.user.role === 'institution') {
+      const institution = await prisma.institution.findFirst({
+        where: { users: { some: { id: req.user.id } } },
+      });
+      if (!institution || institution.id !== req.params.institutionId) {
+        return res.status(403).json({ error: 'Insufficient permissions' });
+      }
+    }
     const feedbacks = await prisma.feedbackSkill.findMany({
       where: { institutionId: req.params.institutionId },
       include: { company: { select: { name: true } } },
@@ -76,10 +84,17 @@ router.get('/feedback/:institutionId', authMiddleware, async (req, res) => {
   }
 });
 
-// GET /api/company/analytics/:companyId
-router.get('/analytics/:companyId', authMiddleware, roleGuard('company'), async (req, res) => {
+// GET /api/company/analytics/:companyId - own company only (admin allowed)
+router.get('/analytics/:companyId', authMiddleware, roleGuard('company', 'admin'), async (req, res) => {
   try {
     const companyId = req.params.companyId;
+
+    if (req.user.role === 'company') {
+      const company = await prisma.companyProfile.findUnique({ where: { userId: req.user.id } });
+      if (!company || company.id !== companyId) {
+        return res.status(403).json({ error: 'Insufficient permissions' });
+      }
+    }
 
     const totalJobs = await prisma.internshipJob.count({ where: { companyId } });
     const totalApplications = await prisma.studentApplication.count({ where: { job: { companyId } } });

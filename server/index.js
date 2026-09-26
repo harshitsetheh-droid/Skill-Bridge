@@ -1,5 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
+import { rateLimit } from 'express-rate-limit';
 import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs';
@@ -17,11 +19,77 @@ import aiRoutes from './routes/ai.js';
 
 dotenv.config();
 
+const isProd = process.env.NODE_ENV === 'production';
+
 const app = express();
 const prisma = new PrismaClient();
 
-app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:3000', credentials: true }));
+// Proxy requests come from Render's reverse proxy; trust one hop so req.ip
+// and rate-limit keying use the real client IP, not the proxy's.
+app.set('trust proxy', 1);
+
+app.use(
+  helmet({
+    contentSecurityPolicy: isProd
+      ? {
+          directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'"],
+            styleSrc: ["'self'", "'unsafe-inline'"],
+            imgSrc: ["'self'", 'data:', 'https:'],
+            connectSrc: ["'self'"],
+            fontSrc: ["'self'", 'data:'],
+            objectSrc: ["'none'"],
+            frameAncestors: ["'none'"],
+            upgradeInsecureRequests: [],
+          },
+        }
+      : false,
+    crossOriginEmbedderPolicy: false,
+  })
+);
+
+const FRONTEND_URLS = (process.env.FRONTEND_URL || 'http://localhost:3000')
+  .split(',')
+  .map((u) => u.trim())
+  .filter(Boolean);
+
+app.use(
+  cors({
+    origin: FRONTEND_URLS.length === 1 ? FRONTEND_URLS[0] : FRONTEND_URLS,
+    credentials: true,
+  })
+);
+
 app.use(express.json({ limit: '10mb' }));
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 300, // per IP
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please slow down.' },
+});
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 30,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: { error: 'Too many login/signup attempts from this IP. Try again later.' },
+});
+
+const aiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 60,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: { error: 'Too many AI requests from this IP. Try again later.' },
+});
+
+app.use('/api', apiLimiter);
+app.use('/api/auth', authLimiter);
+app.use('/api/ai', aiLimiter);
 
 app.set('prisma', prisma);
 
@@ -47,6 +115,9 @@ if (process.env.NODE_ENV === 'production' && fs.existsSync(distDir)) {
 
 app.use((err, _req, res, _next) => {
   console.error(err.stack);
+  if (isProd) {
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
   res.status(500).json({ error: 'Internal Server Error', message: err.message });
 });
 

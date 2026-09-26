@@ -52,11 +52,24 @@ router.post('/apply', authMiddleware, roleGuard('student'), async (req, res) => 
 // GET /api/applications - list applications (filtered by role)
 router.get('/', authMiddleware, async (req, res) => {
   try {
-    const { jobId, studentId, status } = req.query;
+    const { jobId, status } = req.query;
     const where = {};
     if (jobId) where.jobId = jobId;
-    if (studentId) where.studentId = studentId;
     if (status) where.status = status;
+
+    if (req.user.role === 'student') {
+      where.studentId = req.user.id;
+    } else if (req.user.role === 'company') {
+      const company = await prisma.companyProfile.findUnique({ where: { userId: req.user.id } });
+      if (!company) return res.status(403).json({ error: 'Company profile not found' });
+      where.job = { companyId: company.id };
+    } else if (req.user.role === 'institution') {
+      const institution = await prisma.institution.findFirst({
+        where: { users: { some: { id: req.user.id } } },
+      });
+      if (!institution) return res.status(403).json({ error: 'Institution not found' });
+      where.student = { institutionId: institution.id };
+    }
 
     const applications = await prisma.studentApplication.findMany({
       where,
@@ -72,12 +85,23 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// PATCH /api/applications/:id/status - company updates status
+// PATCH /api/applications/:id/status - company updates status (own job only)
 router.patch('/:id/status', authMiddleware, roleGuard('company'), async (req, res) => {
   try {
     const { status, packageOffered, offeredRole, postingLocation, joiningDate } = req.body;
 
-    const application = await prisma.studentApplication.update({
+    const application = await prisma.studentApplication.findUnique({
+      where: { id: req.params.id },
+      include: { job: true },
+    });
+    if (!application) return res.status(404).json({ error: 'Application not found' });
+
+    const company = await prisma.companyProfile.findUnique({ where: { userId: req.user.id } });
+    if (!company || application.job.companyId !== company.id) {
+      return res.status(403).json({ error: 'Insufficient permissions' });
+    }
+
+    const updated = await prisma.studentApplication.update({
       where: { id: req.params.id },
       data: {
         status,
@@ -104,8 +128,8 @@ router.patch('/:id/status', authMiddleware, roleGuard('company'), async (req, re
 
     res.json({
       status: 'success',
-      applicationId: application.id,
-      currentStatus: application.status,
+      applicationId: updated.id,
+      currentStatus: updated.status,
       tpoNotified: true,
       studentNotified: true,
     });
@@ -114,9 +138,16 @@ router.patch('/:id/status', authMiddleware, roleGuard('company'), async (req, re
   }
 });
 
-// GET /api/applications/company/:companyId
-router.get('/company/:companyId', authMiddleware, roleGuard('company'), async (req, res) => {
+// GET /api/applications/company/:companyId - own company only (admin allowed)
+router.get('/company/:companyId', authMiddleware, roleGuard('company', 'admin'), async (req, res) => {
   try {
+    if (req.user.role === 'company') {
+      const company = await prisma.companyProfile.findUnique({ where: { userId: req.user.id } });
+      if (!company || company.id !== req.params.companyId) {
+        return res.status(403).json({ error: 'Insufficient permissions' });
+      }
+    }
+
     const applications = await prisma.studentApplication.findMany({
       where: { job: { companyId: req.params.companyId } },
       include: {
@@ -131,9 +162,18 @@ router.get('/company/:companyId', authMiddleware, roleGuard('company'), async (r
   }
 });
 
-// GET /api/applications/institution/:institutionId
-router.get('/institution/:institutionId', authMiddleware, roleGuard('institution'), async (req, res) => {
+// GET /api/applications/institution/:institutionId - own institution only (admin allowed)
+router.get('/institution/:institutionId', authMiddleware, roleGuard('institution', 'admin'), async (req, res) => {
   try {
+    if (req.user.role === 'institution') {
+      const institution = await prisma.institution.findFirst({
+        where: { users: { some: { id: req.user.id } } },
+      });
+      if (!institution || institution.id !== req.params.institutionId) {
+        return res.status(403).json({ error: 'Insufficient permissions' });
+      }
+    }
+
     const applications = await prisma.studentApplication.findMany({
       where: { student: { institutionId: req.params.institutionId } },
       include: {

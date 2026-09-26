@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
-import { authMiddleware } from '../middleware/auth.js';
+import { authMiddleware, roleGuard } from '../middleware/auth.js';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -9,6 +9,18 @@ const prisma = new PrismaClient();
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const { studentId } = req.query;
+
+    if (req.user.role === 'student') {
+      if (studentId && studentId !== req.user.id) {
+        return res.status(403).json({ error: 'Insufficient permissions' });
+      }
+      const projects = await prisma.studentProject.findMany({
+        where: { studentId: req.user.id },
+        orderBy: { createdAt: 'desc' },
+      });
+      return res.json({ projects });
+    }
+
     const where = studentId ? { studentId } : {};
     const projects = await prisma.studentProject.findMany({ where, orderBy: { createdAt: 'desc' } });
     res.json({ projects });
@@ -18,11 +30,11 @@ router.get('/', authMiddleware, async (req, res) => {
 });
 
 // POST /api/projects - add a new project
-router.post('/', authMiddleware, async (req, res) => {
+router.post('/', authMiddleware, roleGuard('student'), async (req, res) => {
   try {
-    const { studentId, title, description, techStack, repoUrl, liveUrl } = req.body;
+    const { title, description, techStack, repoUrl, liveUrl } = req.body;
     const project = await prisma.studentProject.create({
-      data: { studentId, title, description, techStack, repoUrl, liveUrl },
+      data: { studentId: req.user.id, title, description, techStack, repoUrl, liveUrl },
     });
     res.status(201).json({ project });
   } catch (error) {
@@ -30,12 +42,27 @@ router.post('/', authMiddleware, async (req, res) => {
   }
 });
 
+// Ensure the caller may operate on this project (owner student, or admin/institution).
+async function assertProjectAccess(req, res, project) {
+  if (!project) return false;
+  if (req.user.role === 'student' && project.studentId !== req.user.id) {
+    res.status(403).json({ error: 'Insufficient permissions' });
+    return false;
+  }
+  if (!['student', 'admin', 'institution'].includes(req.user.role)) {
+    res.status(403).json({ error: 'Insufficient permissions' });
+    return false;
+  }
+  return true;
+}
+
 // POST /api/projects/:id/analyze-code - AST code analysis via Gemini
 router.post('/:id/analyze-code', authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     const project = await prisma.studentProject.findUnique({ where: { id } });
     if (!project) return res.status(404).json({ error: 'Project not found' });
+    if (!(await assertProjectAccess(req, res, project))) return;
 
     // Call Gemini AI for AST analysis
     const { analyzeCodeOriginality } = await import('../services/gemini.js');
@@ -77,6 +104,7 @@ router.post('/:id/submit-defense', authMiddleware, async (req, res) => {
 
     const project = await prisma.studentProject.findUnique({ where: { id } });
     if (!project) return res.status(404).json({ error: 'Project not found' });
+    if (!(await assertProjectAccess(req, res, project))) return;
 
     const { evaluateDefense } = await import('../services/gemini.js');
     const result = await evaluateDefense({
@@ -105,7 +133,7 @@ router.post('/:id/submit-defense', authMiddleware, async (req, res) => {
 });
 
 // GET /api/projects/flagged - all flagged projects (institution/admin)
-router.get('/flagged', authMiddleware, async (req, res) => {
+router.get('/flagged', authMiddleware, roleGuard('institution', 'admin'), async (req, res) => {
   try {
     const flagged = await prisma.studentProject.findMany({
       where: { status: 'flagged' },

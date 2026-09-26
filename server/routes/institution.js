@@ -77,11 +77,19 @@ router.get('/drive-requests', authMiddleware, roleGuard('institution'), async (r
 router.patch('/drive-requests/:id', authMiddleware, roleGuard('institution'), async (req, res) => {
   try {
     const { status, tpoRemarks } = req.body;
-    const request = await prisma.driveRequest.update({
+    const institution = await prisma.institution.findFirst({
+      where: { users: { some: { id: req.user.id } } },
+    });
+    const request = await prisma.driveRequest.findUnique({ where: { id: req.params.id } });
+    if (!request) return res.status(404).json({ error: 'Drive request not found' });
+    if (!institution || request.institutionId !== institution.id) {
+      return res.status(403).json({ error: 'Insufficient permissions' });
+    }
+    const updated = await prisma.driveRequest.update({
       where: { id: req.params.id },
       data: { status, tpoRemarks },
     });
-    res.json({ request });
+    res.json({ request: updated });
   } catch (error) {
     res.status(500).json({ error: 'Failed to update drive request' });
   }

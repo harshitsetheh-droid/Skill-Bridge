@@ -5,23 +5,46 @@ import { generateToken, hashPassword, comparePassword, authMiddleware } from '..
 const router = Router();
 const prisma = new PrismaClient();
 
+const ALLOWED_ROLES = ['student', 'company', 'institution'];
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function validateCredentials(email, password) {
+  if (!email || typeof email !== 'string' || !EMAIL_RE.test(email.trim())) {
+    return 'Please provide a valid email address.';
+  }
+  if (!password || typeof password !== 'string' || password.length < 8) {
+    return 'Password must be at least 8 characters long.';
+  }
+  return null;
+}
+
 // POST /api/auth/signup
 router.post('/signup', async (req, res) => {
   try {
     const { email, password, role, fullName, institutionCode, companyName, industry, location, tpoName, tpoEmail } = req.body;
 
-    const existing = await prisma.user.findUnique({ where: { email } });
+    const normalizedEmail = (email || '').trim().toLowerCase();
+
+    // Admin accounts are created by seed only — never via public signup.
+    if (!ALLOWED_ROLES.includes(role)) {
+      return res.status(400).json({ error: `Role '${role}' is not allowed to self-register.` });
+    }
+
+    const credError = validateCredentials(normalizedEmail, password);
+    if (credError) return res.status(400).json({ error: credError });
+
+    const existing = await prisma.user.findUnique({ where: { email: normalizedEmail } });
     if (existing) return res.status(400).json({ error: 'Email already registered' });
 
     const passwordHash = await hashPassword(password);
 
     const user = await prisma.user.create({
       data: {
-        email,
+        email: normalizedEmail,
         passwordHash,
         role,
-        fullName,
-        status: role === 'admin' ? 'active' : 'pending_approval',
+        fullName: (fullName || '').trim().slice(0, 120) || 'User',
+        status: 'pending_approval',
       },
     });
 
@@ -63,7 +86,7 @@ router.post('/signup', async (req, res) => {
           code,
           location: location || 'India',
           tpoName: tpoName || fullName,
-          tpoEmail: email,
+          tpoEmail: normalizedEmail,
         },
       });
       await prisma.user.update({
@@ -81,7 +104,7 @@ router.post('/signup', async (req, res) => {
     });
   } catch (error) {
     console.error('Signup error:', error);
-    res.status(500).json({ error: 'Signup failed', message: error.message });
+    res.status(500).json({ error: 'Signup failed' });
   }
 });
 
@@ -89,8 +112,9 @@ router.post('/signup', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password, role } = req.body;
+    const normalizedEmail = (email || '').trim().toLowerCase();
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.user.findUnique({ where: { email: normalizedEmail } });
     if (!user) return res.status(401).json({ error: 'Invalid credentials' });
 
     const valid = await comparePassword(password, user.passwordHash);
@@ -98,6 +122,10 @@ router.post('/login', async (req, res) => {
 
     if (role && user.role !== role) {
       return res.status(403).json({ error: `This account is registered as '${user.role}', not '${role}'` });
+    }
+
+    if (user.status === 'suspended') {
+      return res.status(403).json({ error: 'This account has been suspended. Contact support.' });
     }
 
     const token = generateToken(user);

@@ -5,11 +5,26 @@ import { authMiddleware, roleGuard } from '../middleware/auth.js';
 const router = Router();
 const prisma = new PrismaClient();
 
+// Resolve the student profile id the caller is allowed to read/modify.
+// Students may only access their own profile; admin/institution may access any.
+async function resolveStudentId(req, res, pathId) {
+  if (req.user.role === 'student') {
+    return req.user.id;
+  }
+  if (req.user.role === 'admin' || req.user.role === 'institution') {
+    return pathId;
+  }
+  res.status(403).json({ error: 'Insufficient permissions' });
+  return null;
+}
+
 // GET /api/students/:id/profile
 router.get('/:id/profile', authMiddleware, async (req, res) => {
   try {
+    const studentId = await resolveStudentId(req, res, req.params.id);
+    if (!studentId) return;
     const profile = await prisma.studentProfile.findUnique({
-      where: { id: req.params.id },
+      where: { id: studentId },
       include: { user: { select: { fullName: true, email: true, avatarUrl: true } }, institution: true },
     });
     if (!profile) return res.status(404).json({ error: 'Student not found' });
@@ -22,9 +37,11 @@ router.get('/:id/profile', authMiddleware, async (req, res) => {
 // PUT /api/students/:id/profile
 router.put('/:id/profile', authMiddleware, async (req, res) => {
   try {
+    const studentId = await resolveStudentId(req, res, req.params.id);
+    if (!studentId) return;
     const { branch, year, cgpa, githubUrl, linkedinUrl, readinessScore } = req.body;
     const profile = await prisma.studentProfile.update({
-      where: { id: req.params.id },
+      where: { id: studentId },
       data: { branch, year, cgpa, githubUrl, linkedinUrl, readinessScore },
     });
     res.json({ profile });
@@ -36,8 +53,10 @@ router.put('/:id/profile', authMiddleware, async (req, res) => {
 // GET /api/students/:id/skills
 router.get('/:id/skills', authMiddleware, async (req, res) => {
   try {
+    const studentId = await resolveStudentId(req, res, req.params.id);
+    if (!studentId) return;
     const skills = await prisma.studentSkill.findMany({
-      where: { studentId: req.params.id },
+      where: { studentId },
       include: { skill: true },
     });
     res.json({
@@ -61,6 +80,8 @@ router.get('/:id/skills', authMiddleware, async (req, res) => {
 // POST /api/students/:id/skills
 router.post('/:id/skills', authMiddleware, async (req, res) => {
   try {
+    const studentId = await resolveStudentId(req, res, req.params.id);
+    if (!studentId) return;
     const { skillId, proficiency, level, status } = req.body;
 
     let skill = await prisma.skillMaster.findUnique({ where: { id: skillId } });
@@ -75,7 +96,7 @@ router.post('/:id/skills', authMiddleware, async (req, res) => {
 
     const studentSkill = await prisma.studentSkill.create({
       data: {
-        studentId: req.params.id,
+        studentId,
         skillId: skill.id,
         proficiency: proficiency || 0,
         level: level || 'Beginner',
@@ -89,11 +110,11 @@ router.post('/:id/skills', authMiddleware, async (req, res) => {
 });
 
 // POST /api/students/:id/skills/request
-router.post('/:id/skills/request', authMiddleware, async (req, res) => {
+router.post('/:id/skills/request', authMiddleware, roleGuard('student'), async (req, res) => {
   try {
     const { skillName, category, reason } = req.body;
     const student = await prisma.studentProfile.findUnique({
-      where: { id: req.params.id },
+      where: { id: req.user.id },
       include: { user: true, institution: true },
     });
 
@@ -116,8 +137,10 @@ router.post('/:id/skills/request', authMiddleware, async (req, res) => {
 // GET /api/students/:id/projects
 router.get('/:id/projects', authMiddleware, async (req, res) => {
   try {
+    const studentId = await resolveStudentId(req, res, req.params.id);
+    if (!studentId) return;
     const projects = await prisma.studentProject.findMany({
-      where: { studentId: req.params.id },
+      where: { studentId },
       orderBy: { createdAt: 'desc' },
     });
     res.json({ projects });
@@ -129,8 +152,10 @@ router.get('/:id/projects', authMiddleware, async (req, res) => {
 // GET /api/students/:id/applications
 router.get('/:id/applications', authMiddleware, async (req, res) => {
   try {
+    const studentId = await resolveStudentId(req, res, req.params.id);
+    if (!studentId) return;
     const applications = await prisma.studentApplication.findMany({
-      where: { studentId: req.params.id },
+      where: { studentId },
       include: { job: { include: { company: true } } },
       orderBy: { appliedAt: 'desc' },
     });
