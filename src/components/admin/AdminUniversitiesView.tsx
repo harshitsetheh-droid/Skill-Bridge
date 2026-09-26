@@ -35,31 +35,7 @@ export interface AdminUniversitiesViewProps {
   onNavigateTab?: (tab: string) => void;
 }
 
-export interface UniversityRecord {
-  id: string;
-  name: string;
-  tpoHead: string;
-  email: string;
-  state: string;
-  studentsCount: number;
-  skillGapLevel: 'High' | 'Medium' | 'Low';
-  primaryGaps: string[];
-  status: 'Active' | 'Pending Approval' | 'Delisted';
-  delistReason?: string;
-  appliedDate: string;
-  nirfRank?: number;
-  accreditation: string;
-}
-
-const defaultUniversities: UniversityRecord[] = [
-  { id: 'UNI1', name: 'ABC University', tpoHead: 'Dr. R.K. Verma', email: 'tpo@abc.edu', state: 'Delhi NCR', studentsCount: 2450, skillGapLevel: 'High', primaryGaps: ['Distributed Systems', 'Cloud DevOps', 'Docker'], status: 'Active', appliedDate: '12 Jan 2025', nirfRank: 32, accreditation: 'NAAC A++' },
-  { id: 'UNI2', name: 'XYZ Institute of Tech', tpoHead: 'Prof. Sunita Rao', email: 'tpo@xyz.ac.in', state: 'Karnataka', studentsCount: 1980, skillGapLevel: 'Medium', primaryGaps: ['TypeScript', 'GraphQL', 'Next.js'], status: 'Active', appliedDate: '15 Jan 2025', nirfRank: 18, accreditation: 'NAAC A+' },
-  { id: 'UNI3', name: 'Global Engineering College', tpoHead: 'Dr. Alok Nath', email: 'placements@gec.edu', state: 'Maharashtra', studentsCount: 1670, skillGapLevel: 'Medium', primaryGaps: ['Microservices', 'FastAPI'], status: 'Active', appliedDate: '01 Feb 2025', nirfRank: 45, accreditation: 'NAAC A' },
-  { id: 'UNI4', name: 'PQR University', tpoHead: 'Dr. Meena Iyer', email: 'tpo@pqr.ac.in', state: 'Tamil Nadu', studentsCount: 1240, skillGapLevel: 'High', primaryGaps: ['System Design', 'Kafka', 'Redis'], status: 'Active', appliedDate: '10 Feb 2025', nirfRank: 60, accreditation: 'NAAC A' },
-  { id: 'UNI5', name: 'LMN Technical University', tpoHead: 'Dean S. Saxena', email: 'dean@lmn.edu', state: 'Uttar Pradesh', studentsCount: 1120, skillGapLevel: 'Low', primaryGaps: ['PostgreSQL Optimization'], status: 'Delisted', delistReason: 'Delisted by Admin: Inactive placement cell & fraudulent placement records.', appliedDate: '20 Feb 2025', nirfRank: 84, accreditation: 'NAAC B+' },
-  { id: 'UNI6', name: 'Heritage Institute of Science', tpoHead: 'Prof. Ananya Banerjee', email: 'tpo@heritage.ac.in', state: 'West Bengal', studentsCount: 890, skillGapLevel: 'Medium', primaryGaps: ['Kubernetes', 'CI/CD Pipelines'], status: 'Pending Approval', appliedDate: 'Yesterday 18:30', accreditation: 'UGC Recognized' },
-  { id: 'UNI7', name: 'Apex National Academy', tpoHead: 'Dr. K. Srinivas', email: 'registrations@apex.edu', state: 'Telangana', studentsCount: 740, skillGapLevel: 'High', primaryGaps: ['Modern AI/LLMs', 'PyTorch'], status: 'Pending Approval', appliedDate: 'Today 09:15', accreditation: 'AICTE Approved' },
-];
+import { UniversityRecord, adminUniversitiesSeed as defaultUniversities } from '../../data/adminSeedData';
 
 export const AdminUniversitiesView: React.FC<AdminUniversitiesViewProps> = ({ 
   initialSubTab = 'all-universities',

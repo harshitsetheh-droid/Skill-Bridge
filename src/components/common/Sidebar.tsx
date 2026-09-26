@@ -31,6 +31,7 @@ import {
   Clock
 } from 'lucide-react';
 import { loadDailyStreakState, STREAK_UPDATED_EVENT } from '../../data/dailyQuizStore';
+import { computeSidebarBadges, SIDEBAR_REFRESH_EVENTS } from '../../data/sidebarBadges';
 
 export interface SidebarProps {
   currentRole?: UserRole;
@@ -74,11 +75,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   React.useEffect(() => {
     const handleUpdate = () => {
+      // Rebuild streak + let the memo below recompute badges with fresh store data.
       setStreakState(loadDailyStreakState());
     };
     window.addEventListener(STREAK_UPDATED_EVENT, handleUpdate);
-    return () => window.removeEventListener(STREAK_UPDATED_EVENT, handleUpdate);
-  }, []);
+    SIDEBAR_REFRESH_EVENTS.forEach((evt) => window.addEventListener(evt, handleUpdate));
+    return () => {
+      window.removeEventListener(STREAK_UPDATED_EVENT, handleUpdate);
+      SIDEBAR_REFRESH_EVENTS.forEach((evt) => window.removeEventListener(evt, handleUpdate));
+    };
+  }, [resolvedRole]);
+
+  // Dynamic badges derived from the SAME stores the views use.
+  const dynamicBadges = React.useMemo(
+    () => computeSidebarBadges(resolvedRole),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [resolvedRole, streakState]
+  );
 
   const streakBadge = streakState.todayCompleted
     ? `${streakState.streakCount}d 🔥`
@@ -98,13 +111,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const studentNav: NavItem[] = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'daily-questions', label: 'Daily Questions', icon: Flame, badge: streakBadge, badgeColor: streakBadgeColor },
-    { id: 'skills', label: 'My Skills', icon: Award, badge: '12 Verified', badgeColor: 'bg-emerald-100 text-emerald-800' },
-    { id: 'skill-gap', label: 'Skill Gap Analysis', icon: GitCompare, badge: '3 Gaps', badgeColor: 'bg-amber-100 text-amber-800' },
-    { id: 'projects', label: 'Projects & Code Defense', icon: FolderGit2, badge: '3 Active', badgeColor: 'bg-indigo-100 text-indigo-800' },
-    { id: 'resume', label: 'Certificates & Resume', icon: FileCheck, badge: 'ATS 84%', badgeColor: 'bg-blue-100 text-blue-800' },
-    { id: 'improvement-path', label: 'Improvement Path', icon: TrendingUp, badge: 'Lvl 4', badgeColor: 'bg-purple-100 text-purple-800' },
-    { id: 'internships', label: 'Internships & Jobs', icon: Briefcase, badge: '4 Matched', badgeColor: 'bg-teal-100 text-teal-800' },
-    { id: 'companies', label: 'Companies', icon: Building2, badge: 'Campus Drives', badgeColor: 'bg-indigo-100 text-indigo-800' },
+    { id: 'skills', label: 'My Skills', icon: Award },
+    { id: 'skill-gap', label: 'Skill Gap Analysis', icon: GitCompare },
+    { id: 'projects', label: 'Projects & Code Defense', icon: FolderGit2 },
+    { id: 'resume', label: 'Certificates & Resume', icon: FileCheck },
+    { id: 'improvement-path', label: 'Improvement Path', icon: TrendingUp },
+    { id: 'internships', label: 'Internships & Jobs', icon: Briefcase },
+    { id: 'companies', label: 'Companies', icon: Building2 },
     { id: 'profile-settings', label: 'Profile & Settings', icon: Settings },
   ];
 
@@ -112,10 +125,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const companyNav: NavItem[] = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'profile', label: 'Company Profile', icon: Building, badge: 'Verified', badgeColor: 'bg-emerald-100 text-emerald-800' },
-    { id: 'post-job', label: 'Post a Job', icon: PlusCircle, badge: 'AI Parse', badgeColor: 'bg-blue-100 text-blue-800' },
-    { id: 'applied', label: 'Applied', icon: UserCheck, badge: 'On/Off Campus', badgeColor: 'bg-indigo-100 text-indigo-800' },
-    { id: 'requests', label: 'Requests', icon: Send, badge: 'Drives', badgeColor: 'bg-amber-100 text-amber-800' },
-    { id: 'feedback', label: 'Feedback', icon: MessageSquare, badge: 'Reviews', badgeColor: 'bg-purple-100 text-purple-800' },
+    { id: 'post-job', label: 'Post a Job', icon: PlusCircle },
+    { id: 'applied', label: 'Applied', icon: UserCheck },
+    { id: 'requests', label: 'Requests', icon: Send },
+    { id: 'feedback', label: 'Feedback', icon: MessageSquare },
     { id: 'analytics', label: 'Talent Analytics', icon: BarChart3 },
     { id: 'settings', label: 'Company Settings', icon: Settings },
   ];
@@ -123,28 +136,28 @@ export const Sidebar: React.FC<SidebarProps> = ({
   // Complete side panel options for Institution
   const institutionNav: NavItem[] = [
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
-    { id: 'skills', label: 'Skills', icon: Award, badge: 'Curriculum', badgeColor: 'bg-indigo-100 text-indigo-800' },
-    { id: 'curriculum-gaps', label: 'Curriculum Gaps', icon: Network, badge: '4 Depts', badgeColor: 'bg-amber-100 text-amber-800' },
-    { id: 'students', label: 'Student Readiness', icon: Users, badge: '1,420 Total', badgeColor: 'bg-teal-100 text-teal-800' },
-    { id: 'companies', label: 'Recruiting Companies', icon: Building, badge: '5 Partners', badgeColor: 'bg-blue-100 text-blue-800' },
-    { id: 'applied-selected', label: 'Applied & Selected', icon: CheckCircle2, badge: 'Live Drives', badgeColor: 'bg-emerald-100 text-emerald-800' },
-    { id: 'requests', label: 'Requests', icon: Send, badge: 'TPO Review', badgeColor: 'bg-amber-100 text-amber-800' },
-    { id: 'feedback', label: 'Feedback', icon: MessageSquare, badge: 'Insights', badgeColor: 'bg-indigo-100 text-indigo-800' },
+    { id: 'skills', label: 'Skills', icon: Award },
+    { id: 'curriculum-gaps', label: 'Curriculum Gaps', icon: Network },
+    { id: 'students', label: 'Student Readiness', icon: Users },
+    { id: 'companies', label: 'Recruiting Companies', icon: Building },
+    { id: 'applied-selected', label: 'Applied & Selected', icon: CheckCircle2 },
+    { id: 'requests', label: 'Requests', icon: Send },
+    { id: 'feedback', label: 'Feedback', icon: MessageSquare },
     { id: 'reports', label: 'Accreditation Reports', icon: FileSpreadsheet, badge: 'NIRF / NAAC', badgeColor: 'bg-emerald-100 text-emerald-800' },
   ];
 
   // Complete side panel options for Admin (same clean UI style as other roles)
   const adminNav: NavItem[] = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'all-students', label: 'All Students (Data & Delist)', icon: Users, badge: '12,450' },
-    { id: 'suspicious-profiles', label: 'Suspicious Profiles & Risk Alerts', icon: AlertTriangle, badge: '18 Flagged', badgeColor: 'bg-rose-100 text-rose-800' },
-    { id: 'all-universities', label: 'All Universities', icon: Landmark, badge: '86' },
-    { id: 'university-approval', label: 'University Approval (TPO)', icon: CheckCircle2, badge: '2 Pending', badgeColor: 'bg-amber-100 text-amber-800' },
+    { id: 'all-students', label: 'All Students (Data & Delist)', icon: Users },
+    { id: 'suspicious-profiles', label: 'Suspicious Profiles & Risk Alerts', icon: AlertTriangle },
+    { id: 'all-universities', label: 'All Universities', icon: Landmark },
+    { id: 'university-approval', label: 'University Approval (TPO)', icon: CheckCircle2 },
     { id: 'skill-gap-overview', label: 'Skill Gap Overview', icon: BarChart3 },
-    { id: 'all-companies', label: 'All Companies', icon: Briefcase, badge: '320' },
-    { id: 'internships-jobs', label: 'Internships / Jobs', icon: FileText, badge: 'Direct Live', badgeColor: 'bg-emerald-100 text-emerald-800' },
+    { id: 'all-companies', label: 'All Companies', icon: Briefcase },
+    { id: 'internships-jobs', label: 'Internships / Jobs', icon: FileText },
     { id: 'applications-overview', label: 'Applications Overview', icon: Users },
-    { id: 'session-tracker', label: 'User Login & Session Tracker', icon: Clock, badge: 'Live Audit', badgeColor: 'bg-indigo-100 text-indigo-800' },
+    { id: 'session-tracker', label: 'User Login & Session Tracker', icon: Clock },
   ];
 
   const navItems =
@@ -313,17 +326,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   </span>
                 </div>
 
-                {item.badge && (
+                {(item.badge || dynamicBadges[item.id]?.badge) && (
                   <span
                     className={`text-[10px] px-2 py-0.5 rounded-full font-semibold shrink-0 ml-2 border ${
-                      item.badgeColor
-                        ? `${item.badgeColor} border-current/15`
+                      (dynamicBadges[item.id]?.badgeColor || item.badgeColor)
+                        ? `${dynamicBadges[item.id]?.badgeColor || item.badgeColor} border-current/15`
                         : active
                         ? 'bg-indigo-600 text-white border-indigo-700 dark:bg-indigo-500 dark:border-indigo-400'
                         : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700'
                     }`}
                   >
-                    {item.badge}
+                    {dynamicBadges[item.id]?.badge || item.badge}
                   </span>
                 )}
               </button>

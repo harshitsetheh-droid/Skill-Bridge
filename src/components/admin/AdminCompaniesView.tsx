@@ -31,48 +31,7 @@ export interface AdminCompaniesViewProps {
   onNavigateTab?: (tab: string) => void;
 }
 
-export interface CompanyListing {
-  id: string;
-  name: string;
-  industry: string;
-  email: string;
-  activeJobs: number;
-  totalHired: number;
-  status: 'Active' | 'Pending Approval' | 'Delisted';
-  delistReason?: string;
-  location: string;
-  registeredDate: string;
-}
-
-export interface JobListing {
-  id: string;
-  title: string;
-  company: string;
-  applicationsCount: number;
-  status: 'Active (Direct Live)' | 'Closed';
-  stipend: string;
-  postedDate: string;
-  location: string;
-  skillsRequired: string[];
-}
-
-const defaultCompanies: CompanyListing[] = [
-  { id: 'COM1', name: 'TechNova Solutions', industry: 'Cloud & AI SaaS', email: 'talent@technova.com', activeJobs: 6, totalHired: 42, status: 'Active', location: 'Bengaluru / Remote', registeredDate: '05 Jan 2025' },
-  { id: 'COM2', name: 'DataHub Solutions', industry: 'Analytics & FinTech', email: 'recruiter@datahub.io', activeJobs: 4, totalHired: 28, status: 'Active', location: 'Hyderabad', registeredDate: '18 Jan 2025' },
-  { id: 'COM3', name: 'DesignCraft Studios', industry: 'Product & UI/UX', email: 'jobs@designcraft.com', activeJobs: 3, totalHired: 15, status: 'Active', location: 'Mumbai', registeredDate: '22 Jan 2025' },
-  { id: 'COM4', name: 'CodeSoft Systems', industry: 'Distributed Computing', email: 'careers@codesoft.org', activeJobs: 5, totalHired: 34, status: 'Active', location: 'Pune', registeredDate: '10 Feb 2025' },
-  { id: 'COM5', name: 'InnoMind AI', industry: 'Generative AI & LLMs', email: 'hiring@innomind.ai', activeJobs: 8, totalHired: 19, status: 'Active', location: 'Bengaluru', registeredDate: '28 Feb 2025' },
-  { id: 'COM6', name: 'ZetaEdge Technologies', industry: 'Cybersecurity & Web3', email: 'hr@zetaedge.tech', activeJobs: 2, totalHired: 8, status: 'Pending Approval', location: 'Noida', registeredDate: 'Today 10:45' },
-  { id: 'COM7', name: 'CloudScale Corp', industry: 'Infrastructure & SRE', email: 'ops@cloudscale.net', activeJobs: 1, totalHired: 0, status: 'Pending Approval', location: 'Gurugram', registeredDate: 'Yesterday 14:20' },
-];
-
-const mockDirectJobs: JobListing[] = [
-  { id: 'JOB1', title: 'Frontend Developer Intern', company: 'TechNova Solutions', applicationsCount: 91, status: 'Active (Direct Live)', stipend: '₹40,000/mo', postedDate: '15 May 2025', location: 'Remote', skillsRequired: ['React', 'TypeScript', 'Tailwind'] },
-  { id: 'JOB2', title: 'Data Analyst Intern', company: 'DataHub Solutions', applicationsCount: 64, status: 'Active (Direct Live)', stipend: '₹35,000/mo', postedDate: '18 May 2025', location: 'Hyderabad', skillsRequired: ['SQL', 'Python', 'PowerBI'] },
-  { id: 'JOB3', title: 'UI/UX Design Intern', company: 'DesignCraft Studios', applicationsCount: 53, status: 'Active (Direct Live)', stipend: '₹30,000/mo', postedDate: '20 May 2025', location: 'Mumbai', skillsRequired: ['Figma', 'Prototyping', 'Design Systems'] },
-  { id: 'JOB4', title: 'Backend Developer Intern', company: 'CodeSoft Systems', applicationsCount: 48, status: 'Active (Direct Live)', stipend: '₹45,000/mo', postedDate: '22 May 2025', location: 'Pune', skillsRequired: ['Node.js', 'PostgreSQL', 'Docker'] },
-  { id: 'JOB5', title: 'AI/ML Intern', company: 'InnoMind AI', applicationsCount: 37, status: 'Active (Direct Live)', stipend: '₹50,000/mo', postedDate: '24 May 2025', location: 'Bengaluru', skillsRequired: ['PyTorch', 'FastAPI', 'LangChain'] },
-];
+import { CompanyListing, JobListing, adminCompaniesSeed as defaultCompanies, adminJobsSeed as mockDirectJobs } from '../../data/adminSeedData';
 
 export const AdminCompaniesView: React.FC<AdminCompaniesViewProps> = ({ 
   initialSubTab = 'all-companies',
