@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authMiddleware, roleGuard } from '../middleware/auth.js';
-import { getSupabaseAdmin } from '../services/supabase.js';
+import { getSupabaseStorage } from '../services/supabase.js';
 
 const router = Router();
 
@@ -28,10 +28,17 @@ router.post('/resume', authMiddleware, roleGuard('student'), async (req, res) =>
     if (buffer.length === 0) return res.status(400).json({ error: 'Empty file' });
     if (buffer.length > 10 * 1024 * 1024) return res.status(400).json({ error: 'File too large (max 10MB)' });
 
-    const admin = getSupabaseAdmin();
+    const admin = getSupabaseStorage();
 
     // Ensure bucket exists (ignore if already present).
-    await admin.storage.createBucket(BUCKET, { public: true, fileSizeLimit: 10 * 1024 * 1024 }).catch(() => {});
+    const bucketResult = await admin.storage.createBucket(BUCKET, { public: true, fileSizeLimit: 10 * 1024 * 1024 });
+    if (bucketResult.error && !/already exists/i.test(bucketResult.error.message)) {
+      console.warn('createBucket warning:', bucketResult.error.message);
+    }
+    const bucketCheck = await admin.storage.getBucket(BUCKET);
+    if (bucketCheck.error) {
+      return res.status(500).json({ error: `Storage bucket '${BUCKET}' not available: ${bucketCheck.error.message}` });
+    }
 
     const { error } = await admin.storage
       .from(BUCKET)

@@ -7,6 +7,7 @@ const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 let supabase = null;
+let storageAdmin = null;
 
 export function getSupabaseAdmin() {
   if (!supabase) {
@@ -18,6 +19,21 @@ export function getSupabaseAdmin() {
     });
   }
   return supabase;
+}
+
+// Dedicated storage-only client. The auth admin client picks up a session after
+// signInWithPassword, and that user token breaks bucket/upload RLS. Storage is
+// always called with this separate client so it keeps the service-role key.
+export function getSupabaseStorage() {
+  if (!storageAdmin) {
+    if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+      throw new Error('SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be configured');
+    }
+    storageAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    });
+  }
+  return storageAdmin;
 }
 
 // Verify a Supabase access token and return the auth user, or null if invalid.
