@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { createAuthUser, createAppUser } from './services/supabase.js';
+import { getSupabaseAdmin, createAuthUser, createAppUser } from './services/supabase.js';
 
 const prisma = new PrismaClient();
 
@@ -32,15 +32,24 @@ async function main() {
   const email = 'harshitseth.eh@gmail.com';
   const password = '123456';
 
-  // Create identity in Supabase Auth (admin bypasses email confirmation).
-  const { data: authData, error: authError } = await createAuthUser(email, password, 'Harshit', 'admin');
-  if (authError) {
-    console.error('Failed to create Supabase auth user:', authError.message);
-    throw new Error(authError.message);
-  }
+  const sb = getSupabaseAdmin();
+  // Reuse existing auth user if present (makes seed idempotent), else create it.
+  const { data: existing } = await sb.auth.admin.listUsers({ page: 1, perPage: 1000 });
+  const existingAdmin = existing?.users?.find((u) => u.email.toLowerCase() === email);
+  let authUserId;
 
-  const authUserId = authData?.user?.id;
-  if (!authUserId) throw new Error('Supabase auth user id missing');
+  if (existingAdmin) {
+    authUserId = existingAdmin.id;
+    console.log('Admin auth user already exists, reusing.');
+  } else {
+    const { data: authData, error: authError } = await createAuthUser(email, password, 'Harshit', 'admin');
+    if (authError) {
+      console.error('Failed to create Supabase auth user:', authError.message);
+      throw new Error(authError.message);
+    }
+    authUserId = authData?.user?.id;
+    if (!authUserId) throw new Error('Supabase auth user id missing');
+  }
 
   await createAppUser({
     id: authUserId,
