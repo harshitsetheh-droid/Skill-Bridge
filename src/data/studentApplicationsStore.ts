@@ -45,6 +45,12 @@ class StudentApplicationsStore {
     }
   }
 
+  // Re-read all three stores from localStorage (used by the default data seeder)
+  public reloadAllFromStorage() {
+    this.loadFromStorage();
+    this.notify();
+  }
+
   private saveToStorage() {
     try {
       localStorage.setItem('sb_on_campus_apps', JSON.stringify(this.onCampusApps));

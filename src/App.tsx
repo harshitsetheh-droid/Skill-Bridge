@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { UserRole } from './types';
 import { recordLogin } from './data/dailyQuizStore';
+import { seedDefaultDemoData } from './data/seedDemoData';
 import { TopRoleBar } from './components/common/TopRoleBar';
 import { Sidebar } from './components/common/Sidebar';
 import { AuthFlow } from './components/auth/AuthFlow';
@@ -70,6 +71,8 @@ function clearLegacySeedData() {
   }
 }
 clearLegacySeedData();
+// Populate a realistic default demo dataset (only fills stores that are empty).
+seedDefaultDemoData();
 
 export default function App() {
   const [currentRole, setCurrentRole] = useState<UserRole>('student');
