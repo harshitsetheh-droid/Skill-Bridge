@@ -62,24 +62,24 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
       {/* Top Header Bar inside Dashboard */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Welcome back, Admin!
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Here's what's happening on SkillBridge platform today.
           </p>
         </div>
 
         {/* Date Filter & Admin Profile Snapshot */}
         <div className="flex items-center gap-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-xs font-medium text-slate-700 shadow-2xs">
+          <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-700 dark:text-slate-300 shadow-2xs">
             <span>{dateRange}</span>
             <Calendar className="w-3.5 h-3.5 text-slate-400" />
           </div>
 
           <button 
             onClick={() => onNavigateTab('risk-alerts')}
-            className="relative p-2 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 shadow-2xs transition-colors"
+            className="relative p-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800/40 shadow-2xs transition-colors"
             title="12 Active Notifications"
           >
             <Bell className="w-4 h-4" />
@@ -88,13 +88,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
             </span>
           </button>
 
-          <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
+          <div className="flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-slate-700">
             <div className="w-8 h-8 rounded-full bg-slate-900 text-white font-bold text-xs flex items-center justify-center shadow-xs">
               AU
             </div>
             <div className="hidden md:block text-left leading-tight">
-              <div className="text-xs font-bold text-slate-900">Admin User</div>
-              <div className="text-[10px] text-slate-500 font-medium">Super Admin</div>
+              <div className="text-xs font-bold text-slate-900 dark:text-white dark:text-white">Admin User</div>
+              <div className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Super Admin</div>
             </div>
           </div>
         </div>
@@ -107,18 +107,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
         {/* Total Students */}
         <div 
           onClick={() => onNavigateTab('all-students')}
-          className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 hover:border-indigo-300 transition-all cursor-pointer"
+          className="bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-sm border border-slate-200/80 dark:border-slate-700 hover:border-indigo-300 transition-all cursor-pointer"
         >
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
               <Users className="w-4 h-4" />
             </div>
             <div>
-              <span className="text-[11px] font-medium text-slate-500 block">Total Students</span>
-              <span className="text-lg font-extrabold text-slate-900">12,450</span>
+              <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 block">Total Students</span>
+              <span className="text-lg font-extrabold text-slate-900 dark:text-white">12,450</span>
             </div>
           </div>
-          <div className="mt-2.5 flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+          <div className="mt-2.5 flex items-center gap-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
             <TrendingUp className="w-3 h-3" />
             <span>8.6% from last month</span>
           </div>
@@ -127,18 +127,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
         {/* Total Universities */}
         <div 
           onClick={() => onNavigateTab('all-universities')}
-          className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 hover:border-emerald-300 transition-all cursor-pointer"
+          className="bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-sm border border-slate-200/80 dark:border-slate-700 hover:border-emerald-300 transition-all cursor-pointer"
         >
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
               <Landmark className="w-4 h-4" />
             </div>
             <div>
-              <span className="text-[11px] font-medium text-slate-500 block">Total Universities</span>
-              <span className="text-lg font-extrabold text-slate-900">86</span>
+              <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 block">Total Universities</span>
+              <span className="text-lg font-extrabold text-slate-900 dark:text-white">86</span>
             </div>
           </div>
-          <div className="mt-2.5 flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+          <div className="mt-2.5 flex items-center gap-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
             <TrendingUp className="w-3 h-3" />
             <span>5.4% from last month</span>
           </div>
@@ -147,18 +147,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
         {/* Total Companies */}
         <div 
           onClick={() => onNavigateTab('all-companies')}
-          className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 hover:border-amber-300 transition-all cursor-pointer"
+          className="bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-sm border border-slate-200/80 dark:border-slate-700 hover:border-amber-300 transition-all cursor-pointer"
         >
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
               <Briefcase className="w-4 h-4" />
             </div>
             <div>
-              <span className="text-[11px] font-medium text-slate-500 block">Total Companies</span>
-              <span className="text-lg font-extrabold text-slate-900">320</span>
+              <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 block">Total Companies</span>
+              <span className="text-lg font-extrabold text-slate-900 dark:text-white">320</span>
             </div>
           </div>
-          <div className="mt-2.5 flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+          <div className="mt-2.5 flex items-center gap-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
             <TrendingUp className="w-3 h-3" />
             <span>7.2% from last month</span>
           </div>
@@ -167,18 +167,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
         {/* Active Internships */}
         <div 
           onClick={() => onNavigateTab('internships-jobs')}
-          className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 hover:border-blue-300 transition-all cursor-pointer"
+          className="bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-sm border border-slate-200/80 dark:border-slate-700 hover:border-blue-300 transition-all cursor-pointer"
         >
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
               <FileText className="w-4 h-4" />
             </div>
             <div>
-              <span className="text-[11px] font-medium text-slate-500 block">Active Internships</span>
-              <span className="text-lg font-extrabold text-slate-900">580</span>
+              <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 block">Active Internships</span>
+              <span className="text-lg font-extrabold text-slate-900 dark:text-white">580</span>
             </div>
           </div>
-          <div className="mt-2.5 flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+          <div className="mt-2.5 flex items-center gap-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
             <TrendingUp className="w-3 h-3" />
             <span>10.3% from last month</span>
           </div>
@@ -187,18 +187,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
         {/* Pending Signups (TPO & Companies) */}
         <div 
           onClick={() => onNavigateTab('university-approval')}
-          className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 hover:border-amber-400 transition-all cursor-pointer"
+          className="bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-sm border border-slate-200/80 dark:border-slate-700 hover:border-amber-400 transition-all cursor-pointer"
         >
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
               <Hourglass className="w-4 h-4" />
             </div>
             <div>
-              <span className="text-[11px] font-medium text-slate-500 block">Pending Signups</span>
-              <span className="text-lg font-extrabold text-slate-900">4</span>
+              <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 block">Pending Signups</span>
+              <span className="text-lg font-extrabold text-slate-900 dark:text-white">4</span>
             </div>
           </div>
-          <div className="mt-2.5 flex items-center gap-1 text-[11px] font-semibold text-amber-600">
+          <div className="mt-2.5 flex items-center gap-1 text-[11px] font-semibold text-amber-600 dark:text-amber-400">
             <TrendingUp className="w-3 h-3" />
             <span>TPOs & Companies awaiting approval</span>
           </div>
@@ -207,18 +207,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
         {/* High Risk Alerts */}
         <div 
           onClick={() => onNavigateTab('risk-alerts')}
-          className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 hover:border-red-400 transition-all cursor-pointer"
+          className="bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-sm border border-slate-200/80 dark:border-slate-700 hover:border-red-400 transition-all cursor-pointer"
         >
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0">
               <ShieldAlert className="w-4 h-4" />
             </div>
             <div>
-              <span className="text-[11px] font-medium text-slate-500 block">High Risk Alerts</span>
-              <span className="text-lg font-extrabold text-slate-900 text-red-600">18</span>
+              <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 block">High Risk Alerts</span>
+              <span className="text-lg font-extrabold text-slate-900 dark:text-white dark:text-white dark:text-red-400">18</span>
             </div>
           </div>
-          <div className="mt-2.5 flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+          <div className="mt-2.5 flex items-center gap-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
             <TrendingUp className="w-3 h-3" />
             <span>12.5% from last month</span>
           </div>
@@ -231,14 +231,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         
         {/* 1. Platform Overview (Line Graph) */}
-        <div className="lg:col-span-5 bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-col justify-between">
+        <div className="lg:col-span-5 bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-slate-200/80 dark:border-slate-700 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-bold text-slate-900">Platform Overview</h2>
+              <h2 className="text-sm font-bold text-slate-900 dark:text-white dark:text-white">Platform Overview</h2>
               <select
                 value={selectedTimeRange}
                 onChange={(e) => setSelectedTimeRange(e.target.value)}
-                className="text-xs bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1 text-slate-700 font-medium focus:outline-hidden"
+                className="text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-2.5 py-1 text-slate-700 dark:text-slate-300 font-medium focus:outline-hidden"
               >
                 <option value="This Month">This Month</option>
                 <option value="Last 3 Months">Last 3 Months</option>
@@ -250,15 +250,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
             <div className="flex items-center gap-4 text-xs mb-3 font-medium">
               <div className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-blue-600" />
-                <span className="text-slate-600">Students</span>
+                <span className="text-slate-600 dark:text-slate-400">Students</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-                <span className="text-slate-600">Companies</span>
+                <span className="text-slate-600 dark:text-slate-400">Companies</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
-                <span className="text-slate-600">Internships</span>
+                <span className="text-slate-600 dark:text-slate-400">Internships</span>
               </div>
             </div>
 
@@ -327,9 +327,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
         </div>
 
         {/* 2. Verification Status (Donut Chart) */}
-        <div className="lg:col-span-4 bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-col justify-between">
+        <div className="lg:col-span-4 bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-slate-200/80 dark:border-slate-700 flex flex-col justify-between">
           <div>
-            <h2 className="text-sm font-bold text-slate-900 mb-2">Verification Status</h2>
+            <h2 className="text-sm font-bold text-slate-900 dark:text-white dark:text-white mb-2">Verification Status</h2>
             
             <div className="flex items-center justify-between gap-2 my-2">
               {/* SVG Donut Chart with Center Text */}
@@ -403,7 +403,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
 
                 {/* Donut Center Display */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center select-none pointer-events-none">
-                  <span className="text-base font-extrabold text-slate-900 tracking-tight leading-none">
+                  <span className="text-base font-extrabold text-slate-900 dark:text-white tracking-tight leading-none">
                     14,665
                   </span>
                   <span className="text-[9px] text-slate-400 font-semibold uppercase tracking-wider mt-0.5">
@@ -417,41 +417,41 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                    <span className="text-slate-600 font-medium">Verified</span>
+                    <span className="text-slate-600 dark:text-slate-400 font-medium">Verified</span>
                   </div>
-                  <span className="font-bold text-slate-900">8,942 (61%)</span>
+                  <span className="font-bold text-slate-900 dark:text-white">8,942 (61%)</span>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-amber-500" />
-                    <span className="text-slate-600 font-medium">Pending</span>
+                    <span className="text-slate-600 dark:text-slate-400 font-medium">Pending</span>
                   </div>
-                  <span className="font-bold text-slate-900">3,142 (21%)</span>
+                  <span className="font-bold text-slate-900 dark:text-white">3,142 (21%)</span>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-blue-500" />
-                    <span className="text-slate-600 font-medium">Under Review</span>
+                    <span className="text-slate-600 dark:text-slate-400 font-medium">Under Review</span>
                   </div>
-                  <span className="font-bold text-slate-900">1,482 (10%)</span>
+                  <span className="font-bold text-slate-900 dark:text-white">1,482 (10%)</span>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-red-500" />
-                    <span className="text-slate-600 font-medium">High Risk</span>
+                    <span className="text-slate-600 dark:text-slate-400 font-medium">High Risk</span>
                   </div>
-                  <span className="font-bold text-red-600">884 (6%)</span>
+                  <span className="font-bold text-red-600 dark:text-red-400">884 (6%)</span>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-slate-400" />
-                    <span className="text-slate-600 font-medium">Rejected</span>
+                    <span className="text-slate-600 dark:text-slate-400 font-medium">Rejected</span>
                   </div>
-                  <span className="font-bold text-slate-600">215 (2%)</span>
+                  <span className="font-bold text-slate-600 dark:text-slate-400">215 (2%)</span>
                 </div>
               </div>
             </div>
@@ -459,13 +459,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
         </div>
 
         {/* 3. Recent Risk Alerts */}
-        <div className="lg:col-span-3 bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-col justify-between">
+        <div className="lg:col-span-3 bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-slate-200/80 dark:border-slate-700 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-bold text-slate-900">Recent Risk Alerts</h2>
+              <h2 className="text-sm font-bold text-slate-900 dark:text-white dark:text-white">Recent Risk Alerts</h2>
               <button 
                 onClick={() => onNavigateTab('risk-alerts')}
-                className="text-xs font-semibold text-blue-600 hover:text-blue-800"
+                className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
               >
                 View All
               </button>
@@ -479,16 +479,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
                 { title: 'Experience not verified', sub: 'Sneha Patel', time: '45 min ago' },
                 { title: 'Multiple suspicious activities', sub: 'User ID: STU12345', time: '1 hr ago' },
               ].map((alert, idx) => (
-                <div key={idx} className="flex items-start gap-2.5 p-1.5 rounded-xl hover:bg-slate-50 transition-colors">
-                  <div className="w-7 h-7 rounded-lg bg-rose-50 border border-rose-100 text-rose-600 flex items-center justify-center shrink-0 mt-0.5">
+                <div key={idx} className="flex items-start gap-2.5 p-1.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                  <div className="w-7 h-7 rounded-lg bg-rose-50 dark:bg-rose-950/50 border border-rose-100 dark:border-rose-800 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0 mt-0.5">
                     <AlertTriangle className="w-3.5 h-3.5" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="text-xs font-bold text-slate-900 leading-snug">
+                    <div className="text-xs font-bold text-slate-900 dark:text-white leading-snug">
                       {alert.title}
                     </div>
                     <div className="flex items-center justify-between text-[10px] text-slate-400 mt-0.5">
-                      <span className="text-slate-600 font-medium truncate">{alert.sub}</span>
+                      <span className="text-slate-600 dark:text-slate-400 font-medium truncate">{alert.sub}</span>
                       <span className="shrink-0">{alert.time}</span>
                     </div>
                   </div>
@@ -499,7 +499,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
 
           <button
             onClick={() => onNavigateTab('risk-alerts')}
-            className="w-full mt-3 py-2 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-700 text-xs font-semibold text-center transition-colors shadow-2xs"
+            className="w-full mt-3 py-2 rounded-xl border border-rose-200 dark:border-rose-800 bg-white dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-700 dark:text-rose-300 text-xs font-semibold text-center transition-colors shadow-2xs"
           >
             View All Alerts
           </button>
@@ -513,16 +513,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         
         {/* Table 1: Pending Signups (TPO & Companies) */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-col justify-between">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-slate-200/80 dark:border-slate-700 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-3">
               <div>
-                <h2 className="text-sm font-bold text-slate-900">Pending Signups (TPO & Co.)</h2>
+                <h2 className="text-sm font-bold text-slate-900 dark:text-white dark:text-white">Pending Signups (TPO & Co.)</h2>
                 <p className="text-[11px] text-slate-400">One-time admin approval for direct login</p>
               </div>
               <button 
                 onClick={() => onNavigateTab('university-approval')}
-                className="text-xs font-semibold text-blue-600 hover:text-blue-800"
+                className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
               >
                 View All
               </button>
@@ -531,22 +531,22 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="text-[11px] font-semibold text-slate-400 border-b border-slate-100">
+                  <tr className="text-[11px] font-semibold text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800">
                     <th className="pb-2">Entity</th>
                     <th className="pb-2">Role</th>
                     <th className="pb-2">Registered</th>
                     <th className="pb-2 text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                   {[
-                    { name: 'Heritage Inst. of Sci.', type: 'TPO / University', date: 'Yesterday', badge: 'bg-emerald-50 text-emerald-700' },
-                    { name: 'ZetaEdge Technologies', type: 'Company / Recruiter', date: 'Today', badge: 'bg-blue-50 text-blue-700' },
-                    { name: 'Apex National Academy', type: 'TPO / University', date: 'Today', badge: 'bg-emerald-50 text-emerald-700' },
-                    { name: 'CloudScale Corp', type: 'Company / Recruiter', date: 'Yesterday', badge: 'bg-blue-50 text-blue-700' },
+                    { name: 'Heritage Inst. of Sci.', type: 'TPO / University', date: 'Yesterday', badge: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' },
+                    { name: 'ZetaEdge Technologies', type: 'Company / Recruiter', date: 'Today', badge: 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300' },
+                    { name: 'Apex National Academy', type: 'TPO / University', date: 'Today', badge: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' },
+                    { name: 'CloudScale Corp', type: 'Company / Recruiter', date: 'Yesterday', badge: 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300' },
                   ].map((row, idx) => (
-                    <tr key={idx} className="hover:bg-slate-50/70 transition-colors">
-                      <td className="py-2.5 font-medium text-slate-900 flex items-center gap-2">
+                    <tr key={idx} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors">
+                      <td className="py-2.5 font-medium text-slate-900 dark:text-white flex items-center gap-2">
                         <div className="w-6 h-6 rounded-full bg-slate-900 text-white font-bold text-[9px] flex items-center justify-center shrink-0">
                           {row.name.substring(0, 2).toUpperCase()}
                         </div>
@@ -583,13 +583,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
         </div>
 
         {/* Table 2: Universities Overview */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-col justify-between">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-slate-200/80 dark:border-slate-700 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-bold text-slate-900">Universities Overview</h2>
+              <h2 className="text-sm font-bold text-slate-900 dark:text-white dark:text-white">Universities Overview</h2>
               <button 
                 onClick={() => onNavigateTab('all-universities')}
-                className="text-xs font-semibold text-blue-600 hover:text-blue-800"
+                className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
               >
                 View All
               </button>
@@ -598,26 +598,26 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="text-[11px] font-semibold text-slate-400 border-b border-slate-100">
+                  <tr className="text-[11px] font-semibold text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800">
                     <th className="pb-2">University</th>
                     <th className="pb-2">Students</th>
                     <th className="pb-2">Skill Gap</th>
                     <th className="pb-2 text-right">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                   {[
-                    { name: 'ABC University', count: '2,450', gap: 'High', gapColor: 'bg-red-50 text-red-700 border-red-200', status: 'Active', active: true },
-                    { name: 'XYZ Institute of Tech', count: '1,980', gap: 'Medium', gapColor: 'bg-amber-50 text-amber-700 border-amber-200', status: 'Active', active: true },
-                    { name: 'Global Engineering College', count: '1,670', gap: 'Medium', gapColor: 'bg-amber-50 text-amber-700 border-amber-200', status: 'Active', active: true },
-                    { name: 'PQR University', count: '1,240', gap: 'High', gapColor: 'bg-red-50 text-red-700 border-red-200', status: 'Active', active: true },
-                    { name: 'LMN Technical University', count: '1,120', gap: 'Low', gapColor: 'bg-emerald-50 text-emerald-700 border-emerald-200', status: 'Inactive', active: false },
+                    { name: 'ABC University', count: '2,450', gap: 'High', gapColor: 'bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-300 dark:border-red-800', status: 'Active', active: true },
+                    { name: 'XYZ Institute of Tech', count: '1,980', gap: 'Medium', gapColor: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800', status: 'Active', active: true },
+                    { name: 'Global Engineering College', count: '1,670', gap: 'Medium', gapColor: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800', status: 'Active', active: true },
+                    { name: 'PQR University', count: '1,240', gap: 'High', gapColor: 'bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-300 dark:border-red-800', status: 'Active', active: true },
+                    { name: 'LMN Technical University', count: '1,120', gap: 'Low', gapColor: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800', status: 'Inactive', active: false },
                   ].map((u, idx) => (
-                    <tr key={idx} className="hover:bg-slate-50/70 transition-colors">
-                      <td className="py-2.5 font-medium text-slate-900 truncate max-w-[140px]">
+                    <tr key={idx} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors">
+                      <td className="py-2.5 font-medium text-slate-900 dark:text-white truncate max-w-[140px]">
                         {u.name}
                       </td>
-                      <td className="py-2.5 text-slate-600 font-semibold">
+                      <td className="py-2.5 text-slate-600 dark:text-slate-300 font-semibold">
                         {u.count}
                       </td>
                       <td className="py-2.5">
@@ -627,7 +627,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
                       </td>
                       <td className="py-2.5 text-right">
                         <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                          u.active ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-600'
+                          u.active ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800' : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300'
                         }`}>
                           {u.status}
                         </span>
@@ -641,20 +641,20 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
 
           <button
             onClick={() => onNavigateTab('all-universities')}
-            className="w-full mt-3 py-2 rounded-xl border border-indigo-200 bg-white hover:bg-indigo-50 text-indigo-700 text-xs font-semibold text-center transition-colors shadow-2xs"
+            className="w-full mt-3 py-2 rounded-xl border border-indigo-200 dark:border-indigo-800 bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 text-xs font-semibold text-center transition-colors shadow-2xs"
           >
             Manage Universities
           </button>
         </div>
 
         {/* Table 3: Recent Opportunities */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-col justify-between">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-slate-200/80 dark:border-slate-700 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-bold text-slate-900">Recent Opportunities</h2>
+              <h2 className="text-sm font-bold text-slate-900 dark:text-white dark:text-white">Recent Opportunities</h2>
               <button 
                 onClick={() => onNavigateTab('internships-jobs')}
-                className="text-xs font-semibold text-blue-600 hover:text-blue-800"
+                className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
               >
                 View All
               </button>
@@ -663,14 +663,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="text-[11px] font-semibold text-slate-400 border-b border-slate-100">
+                  <tr className="text-[11px] font-semibold text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800">
                     <th className="pb-2">Job Title</th>
                     <th className="pb-2">Company</th>
                     <th className="pb-2">Applications</th>
                     <th className="pb-2 text-right">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                   {[
                     { title: 'Frontend Developer Intern', company: 'TechNova', apps: '91', status: 'Active', isPending: false },
                     { title: 'Data Analyst Intern', company: 'DataHub Solutions', apps: '64', status: 'Active', isPending: false },
@@ -678,21 +678,21 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
                     { title: 'Backend Developer Intern', company: 'CodeSoft', apps: '48', status: 'Pending', isPending: true },
                     { title: 'AI/ML Intern', company: 'InnoMind AI', apps: '37', status: 'Active', isPending: false },
                   ].map((job, idx) => (
-                    <tr key={idx} className="hover:bg-slate-50/70 transition-colors">
-                      <td className="py-2.5 font-medium text-slate-900 truncate max-w-[130px]">
+                    <tr key={idx} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors">
+                      <td className="py-2.5 font-medium text-slate-900 dark:text-white truncate max-w-[130px]">
                         {job.title}
                       </td>
-                      <td className="py-2.5 text-slate-600 text-[11px] truncate max-w-[90px]">
+                      <td className="py-2.5 text-slate-600 dark:text-slate-400 text-[11px] truncate max-w-[90px]">
                         {job.company}
                       </td>
-                      <td className="py-2.5 font-semibold text-slate-800">
+                      <td className="py-2.5 font-semibold text-slate-800 dark:text-slate-200">
                         {job.apps}
                       </td>
                       <td className="py-2.5 text-right">
                         <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                           job.isPending 
-                            ? 'bg-amber-50 text-amber-700 border border-amber-200' 
-                            : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                            ? 'bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800' 
+                            : 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800'
                         }`}>
                           {job.status}
                         </span>
@@ -706,7 +706,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
 
           <button
             onClick={() => onNavigateTab('internships-jobs')}
-            className="w-full mt-3 py-2 rounded-xl border border-indigo-200 bg-white hover:bg-indigo-50 text-indigo-700 text-xs font-semibold text-center transition-colors shadow-2xs"
+            className="w-full mt-3 py-2 rounded-xl border border-indigo-200 dark:border-indigo-800 bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 text-xs font-semibold text-center transition-colors shadow-2xs"
           >
             Manage Opportunities
           </button>
@@ -717,14 +717,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
       {/* ========================================================================= */}
       {/* FOOTER STRIP: ADMIN CONTROL CENTER */}
       {/* ========================================================================= */}
-      <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-slate-200/80 dark:border-slate-700 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs">
             <ShieldCheck className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-slate-900">Admin Control Center</h3>
-            <p className="text-xs text-slate-500">
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white dark:text-white">Admin Control Center</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               Manage students, universities, companies and ensure platform integrity.
             </p>
           </div>
@@ -732,34 +732,34 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
 
         {/* 4 Feature Pills from Screenshot */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full md:w-auto">
-          <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-50 border border-slate-200/60 text-xs">
+          <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700 text-xs">
             <ShieldCheck className="w-4 h-4 text-indigo-600 shrink-0" />
             <div>
-              <div className="font-bold text-slate-800 leading-tight">Verify & Approve</div>
+              <div className="font-bold text-slate-800 dark:text-slate-200 leading-tight">Verify & Approve</div>
               <div className="text-[10px] text-slate-400 leading-tight">Profiles & documents</div>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-50 border border-slate-200/60 text-xs">
+          <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700 text-xs">
             <ShieldAlert className="w-4 h-4 text-indigo-600 shrink-0" />
             <div>
-              <div className="font-bold text-slate-800 leading-tight">Detect & Prevent</div>
+              <div className="font-bold text-slate-800 dark:text-slate-200 leading-tight">Detect & Prevent</div>
               <div className="text-[10px] text-slate-400 leading-tight">Fake or suspicious activity</div>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-50 border border-slate-200/60 text-xs">
+          <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700 text-xs">
             <Activity className="w-4 h-4 text-indigo-600 shrink-0" />
             <div>
-              <div className="font-bold text-slate-800 leading-tight">Monitor & Analytics</div>
+              <div className="font-bold text-slate-800 dark:text-slate-200 leading-tight">Monitor & Analytics</div>
               <div className="text-[10px] text-slate-400 leading-tight">Real-time insights</div>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-50 border border-slate-200/60 text-xs">
+          <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700 text-xs">
             <Lock className="w-4 h-4 text-indigo-600 shrink-0" />
             <div>
-              <div className="font-bold text-slate-800 leading-tight">Ensure Trust</div>
+              <div className="font-bold text-slate-800 dark:text-slate-200 leading-tight">Ensure Trust</div>
               <div className="text-[10px] text-slate-400 leading-tight">Safe & transparent platform</div>
             </div>
           </div>
@@ -769,58 +769,58 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateTab })
       {/* Review Modal for Pending Verification item */}
       {activeReviewItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200 animate-scale-in">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200 dark:border-slate-700 animate-scale-in">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 mb-4">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center">
                   <ShieldCheck className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900">
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white dark:text-white">
                     Verification Review
                   </h3>
-                  <span className="text-[11px] text-slate-500">
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400">
                     {activeReviewItem.type}
                   </span>
                 </div>
               </div>
               <button
                 onClick={() => setActiveReviewItem(null)}
-                className="text-slate-400 hover:text-slate-600"
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {reviewActionDone ? (
-              <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold text-center">
+              <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-semibold text-center">
                 {reviewActionDone}
               </div>
             ) : (
               <div className="space-y-4 text-xs">
-                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Applicant:</span>
-                    <span className="font-bold text-slate-900">{activeReviewItem.name}</span>
+                    <span className="text-slate-500 dark:text-slate-400">Applicant:</span>
+                    <span className="font-bold text-slate-900 dark:text-white">{activeReviewItem.name}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Submission Date:</span>
-                    <span className="font-medium text-slate-700">{activeReviewItem.submittedOn}</span>
+                    <span className="text-slate-500 dark:text-slate-400">Submission Date:</span>
+                    <span className="font-medium text-slate-700 dark:text-slate-300">{activeReviewItem.submittedOn}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-500">AI Integrity Score:</span>
-                    <span className="font-bold text-emerald-600">89% Originality ✓</span>
+                    <span className="text-slate-500 dark:text-slate-400">AI Integrity Score:</span>
+                    <span className="font-bold text-emerald-600 dark:text-emerald-400">89% Originality ✓</span>
                   </div>
                 </div>
 
-                <p className="text-slate-600 leading-relaxed">
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
                   {activeReviewItem.details}
                 </p>
 
                 <div className="pt-2 flex items-center justify-end gap-2">
                   <button
                     onClick={handleFlagReview}
-                    className="px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold border border-rose-200 transition-colors"
+                    className="px-3 py-2 rounded-xl bg-rose-50 dark:bg-rose-950/50 hover:bg-rose-100 dark:hover:bg-rose-900/60 text-rose-700 dark:text-rose-300 text-xs font-semibold border border-rose-200 dark:border-rose-800 transition-colors"
                   >
                     Flag as High Risk
                   </button>

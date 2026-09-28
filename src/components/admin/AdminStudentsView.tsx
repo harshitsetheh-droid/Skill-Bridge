@@ -139,20 +139,20 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
   return (
     <div className="space-y-6 w-full pb-10">
       {/* Header Banner */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-700 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold">
+            <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 flex items-center justify-center font-bold">
               <Users className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl font-bold text-slate-900">Student Directory & Data Explorer</h1>
-                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                <h1 className="text-xl font-bold text-slate-900 dark:text-white">Student Directory & Data Explorer</h1>
+                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
                   12,450 Total Students
                 </span>
               </div>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                 Admin Data Portal: Inspect comprehensive student records, AST originality, and exercise delisting control.
               </p>
             </div>
@@ -161,43 +161,43 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
 
         {/* Search */}
         <div className="relative w-full md:w-80">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+          <Search className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3 top-2.5" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by student, college, degree, email..."
-            className="w-full pl-9 pr-3.5 py-2 rounded-xl border border-slate-200 bg-white text-xs text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-indigo-400"
+            className="w-full pl-9 pr-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs text-slate-800 dark:text-slate-200 focus:outline-hidden focus:ring-2 focus:ring-indigo-400"
           />
         </div>
       </div>
 
       {/* Admin Scope Notice */}
-      <div className="p-4 rounded-xl bg-indigo-50/60 border border-indigo-100 flex items-start gap-3">
-        <Info className="w-4 h-4 text-indigo-700 shrink-0 mt-0.5" />
-        <div className="text-xs text-slate-700 leading-relaxed">
-          <span className="font-semibold text-indigo-900">Admin Operational Policy:</span> Student verification is automated via university TPO accreditation and AST code defense challenges. As an administrator, you have read access to all student records and the authority to <span className="font-semibold text-rose-700">delist / suspend</span> any non-compliant student across the network.
+      <div className="p-4 rounded-xl bg-indigo-50/60 dark:bg-slate-800/60 border border-indigo-100 dark:border-slate-700 flex items-start gap-3">
+        <Info className="w-4 h-4 text-indigo-700 dark:text-indigo-300 shrink-0 mt-0.5" />
+        <div className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+          <span className="font-semibold text-indigo-900 dark:text-indigo-200">Admin Operational Policy:</span> Student verification is automated via university TPO accreditation and AST code defense challenges. As an administrator, you have read access to all student records and the authority to <span className="font-semibold text-rose-700 dark:text-rose-300">delist / suspend</span> any non-compliant student across the network.
         </div>
       </div>
 
       {actionNotice && (
-        <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center justify-between animate-fade-in">
+        <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-semibold flex items-center justify-between animate-fade-in">
           <span>{actionNotice}</span>
-          <button onClick={() => setActionNotice(null)} className="text-emerald-600 hover:text-emerald-900 cursor-pointer">
+          <button onClick={() => setActionNotice(null)} className="text-emerald-600 dark:text-emerald-300 hover:text-emerald-900 dark:hover:text-emerald-200 cursor-pointer">
             <CheckCircle2 className="w-4 h-4" />
           </button>
         </div>
       )}
 
       {/* Primary Sub-Tabs & View Mode Switcher */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-2 rounded-2xl border border-slate-200/80 shadow-2xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-slate-900 p-2 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-2xs">
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={() => setActiveSubTab('all')}
             className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${
               activeSubTab === 'all'
                 ? 'bg-indigo-600 text-white shadow-xs'
-                : 'text-slate-600 hover:bg-slate-100'
+                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}
           >
             <Users className="w-3.5 h-3.5" />
@@ -208,13 +208,13 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
             className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${
               activeSubTab === 'suspicious'
                 ? 'bg-indigo-600 text-white shadow-xs'
-                : 'text-slate-600 hover:bg-slate-100'
+                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}
           >
             <AlertTriangle className="w-3.5 h-3.5 text-rose-300" />
             <span>Suspicious Profiles & Risk Alerts</span>
             <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-              activeSubTab === 'suspicious' ? 'bg-white/20 text-white' : 'bg-rose-100 text-rose-800'
+              activeSubTab === 'suspicious' ? 'bg-white/20 text-white' : 'bg-rose-100 dark:bg-rose-900/40 text-rose-800 dark:text-rose-300'
             }`}>
               {students.filter(s => s.riskStatus === 'suspicious' || (s.riskStatus === 'delisted' && s.flagReason)).length} Flagged
             </span>
@@ -222,13 +222,13 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
         </div>
 
         {/* View Mode Toggle: Cards vs Compact Table */}
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 self-end sm:self-auto shrink-0">
+        <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 self-end sm:self-auto shrink-0">
           <button
             onClick={() => setViewMode('cards')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               viewMode === 'cards'
-                ? 'bg-white text-indigo-700 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-white dark:bg-slate-800 text-indigo-700 dark:text-indigo-300 shadow-xs'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
             }`}
             title="Executive Dossier Cards (Auto-Fit, Zero Horizontal Scroll)"
           >
@@ -239,8 +239,8 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
             onClick={() => setViewMode('table')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               viewMode === 'table'
-                ? 'bg-white text-indigo-700 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-white dark:bg-slate-800 text-indigo-700 dark:text-indigo-300 shadow-xs'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
             }`}
             title="Auto-Fitting Compact Table"
           >
@@ -254,19 +254,19 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
       {viewMode === 'cards' && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-5">
           {filtered.length === 0 ? (
-            <div className="col-span-full py-12 text-center bg-white rounded-2xl border border-slate-200 text-slate-400 text-xs">
+            <div className="col-span-full py-12 text-center bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500 text-xs">
               No students matching the current filter.
             </div>
           ) : (
             filtered.map(student => (
               <div
                 key={student.id}
-                className={`bg-white rounded-2xl border transition-all duration-200 p-5 flex flex-col justify-between shadow-2xs hover:shadow-md ${
+                className={`bg-white dark:bg-slate-900 rounded-2xl border transition-all duration-200 p-5 flex flex-col justify-between shadow-2xs hover:shadow-md ${
                   student.isDelisted
-                    ? 'border-rose-200 bg-rose-50/20'
+                    ? 'border-rose-200 dark:border-rose-800 bg-rose-50/20 dark:bg-rose-900/20'
                     : student.riskStatus === 'suspicious'
-                    ? 'border-amber-200 bg-amber-50/20'
-                    : 'border-slate-200/90 hover:border-indigo-300'
+                    ? 'border-amber-200 dark:border-amber-800 bg-amber-50/20 dark:bg-amber-900/20'
+                    : 'border-slate-200/90 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600'
                 }`}
               >
                 <div className="space-y-3">
@@ -274,34 +274,34 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
                       <div className={`w-10 h-10 rounded-full font-bold text-xs flex items-center justify-center shrink-0 ${
-                        student.isDelisted ? 'bg-rose-200 text-rose-800' : 'bg-indigo-100 text-indigo-700'
+                        student.isDelisted ? 'bg-rose-200 dark:bg-rose-800 text-rose-800 dark:text-rose-200' : 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300'
                       }`}>
                         {student.avatar}
                       </div>
                       <div>
                         <button
                           onClick={() => setSelectedStudentForData(student)}
-                          className="text-left font-bold text-slate-900 hover:text-indigo-600 transition-colors cursor-pointer block leading-tight text-sm group"
+                          className="text-left font-bold text-slate-900 dark:text-slate-100 hover:text-indigo-600 dark:hover:text-indigo-300 transition-colors cursor-pointer block leading-tight text-sm group"
                         >
                           <span className="group-hover:underline">{student.name}</span>
                         </button>
-                        <div className="text-[11px] text-slate-400 mt-0.5">{student.email}</div>
+                        <div className="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5">{student.email}</div>
                       </div>
                     </div>
 
                     {/* Status Pill */}
                     {student.isDelisted ? (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-300 shrink-0">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-100 dark:bg-rose-900/40 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-700 shrink-0">
                         <Ban className="w-3 h-3" />
                         Delisted
                       </span>
                     ) : student.riskStatus === 'suspicious' ? (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300 shrink-0">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700 shrink-0">
                         <AlertTriangle className="w-3 h-3" />
                         Flagged
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 shrink-0">
                         <CheckCircle2 className="w-3 h-3" />
                         Clean
                       </span>
@@ -309,33 +309,33 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
                   </div>
 
                   {/* College & Degree */}
-                  <div className="bg-slate-50/80 rounded-xl p-3 border border-slate-100 space-y-1 text-xs">
-                    <div className="font-semibold text-slate-900 flex items-center justify-between">
+                  <div className="bg-slate-50/80 dark:bg-slate-800/60 rounded-xl p-3 border border-slate-100 dark:border-slate-800 space-y-1 text-xs">
+                    <div className="font-semibold text-slate-900 dark:text-slate-100 flex items-center justify-between">
                       <span>{student.college}</span>
-                      <span className="text-[11px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded">CGPA {student.cgpa}</span>
+                      <span className="text-[11px] font-bold text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-900/40 px-2 py-0.5 rounded">CGPA {student.cgpa}</span>
                     </div>
-                    <div className="text-[11px] text-slate-500">{student.degree}</div>
+                    <div className="text-[11px] text-slate-500 dark:text-slate-400">{student.degree}</div>
                   </div>
 
                   {/* AST Defense & Originality Metrics */}
                   <div className="grid grid-cols-2 gap-2 pt-1">
-                    <div className="bg-slate-50/60 p-2.5 rounded-xl border border-slate-100">
-                      <span className="text-[10px] font-medium text-slate-400 block">AST Originality</span>
+                    <div className="bg-slate-50/60 dark:bg-slate-800/60 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800">
+                      <span className="text-[10px] font-medium text-slate-400 dark:text-slate-500 block">AST Originality</span>
                       <div className="flex items-center gap-2 mt-1">
-                        <div className="flex-1 bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                        <div className="flex-1 bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
                           <div
                             className={`h-full rounded-full ${student.originalityScore > 75 ? 'bg-emerald-500' : 'bg-rose-500'}`}
                             style={{ width: `${student.originalityScore}%` }}
                           />
                         </div>
-                        <span className={`font-bold text-xs ${student.originalityScore > 75 ? 'text-emerald-700' : 'text-rose-600'}`}>
+                        <span className={`font-bold text-xs ${student.originalityScore > 75 ? 'text-emerald-700 dark:text-emerald-300' : 'text-rose-600 dark:text-rose-300'}`}>
                           {student.originalityScore}%
                         </span>
                       </div>
                     </div>
-                    <div className="bg-slate-50/60 p-2.5 rounded-xl border border-slate-100">
-                      <span className="text-[10px] font-medium text-slate-400 block">Code Defenses</span>
-                      <span className="text-xs font-bold text-slate-900 mt-1 block">
+                    <div className="bg-slate-50/60 dark:bg-slate-800/60 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800">
+                      <span className="text-[10px] font-medium text-slate-400 dark:text-slate-500 block">Code Defenses</span>
+                      <span className="text-xs font-bold text-slate-900 dark:text-slate-100 mt-1 block">
                         {student.codeDefensePassed}/{student.codeDefenseTotal} Passed
                       </span>
                     </div>
@@ -343,17 +343,17 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
 
                   {/* Verified Skills */}
                   <div>
-                    <span className="text-[10px] font-semibold text-slate-400 block mb-1.5 uppercase tracking-wide">
+                    <span className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 block mb-1.5 uppercase tracking-wide">
                       Verified Skills ({student.skillsVerified}):
                     </span>
                     <div className="flex flex-wrap gap-1.5">
                       {student.skillsList.slice(0, 4).map((skill, i) => (
-                        <span key={i} className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-[11px] font-medium">
+                        <span key={i} className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] font-medium">
                           {skill}
                         </span>
                       ))}
                       {student.skillsList.length > 4 && (
-                        <span className="px-1.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-[10px] font-bold">
+                        <span className="px-1.5 py-0.5 rounded-md bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 text-[10px] font-bold">
                           +{student.skillsList.length - 4} more
                         </span>
                       )}
@@ -362,23 +362,23 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
 
                   {/* Flag Reason if any */}
                   {student.flagReason && (
-                    <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-900 font-medium">
+                    <div className="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 text-[11px] text-amber-900 dark:text-amber-300 font-medium">
                       <span className="font-bold">Flag:</span> {student.flagReason}
                     </div>
                   )}
 
                   {student.delistReason && (
-                    <div className="p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-[11px] text-rose-800 font-medium">
+                    <div className="p-2.5 rounded-xl bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 text-[11px] text-rose-800 dark:text-rose-300 font-medium">
                       <span className="font-bold">Delist Notice:</span> {student.delistReason}
                     </div>
                   )}
                 </div>
 
                 {/* Card Actions Footer */}
-                <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                <div className="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
                   <button
                     onClick={() => setSelectedStudentForData(student)}
-                    className="flex-1 py-2 px-3 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    className="flex-1 py-2 px-3 rounded-xl bg-indigo-50 dark:bg-indigo-900/40 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                   >
                     <Eye className="w-3.5 h-3.5" />
                     <span>View Dossier</span>
@@ -387,7 +387,7 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
                   {activeSubTab === 'suspicious' && student.riskStatus === 'suspicious' && (
                     <button
                       onClick={() => handleDismissAlert(student)}
-                      className="py-2 px-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 text-xs font-medium transition-colors cursor-pointer shrink-0"
+                      className="py-2 px-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-medium transition-colors cursor-pointer shrink-0"
                       title="Dismiss false alarm alert"
                     >
                       Dismiss
@@ -405,7 +405,7 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
                   ) : (
                     <button
                       onClick={() => handleOpenDelistModal(student)}
-                      className="py-2 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer shrink-0"
+                      className="py-2 px-3 rounded-xl bg-rose-50 dark:bg-rose-900/20 hover:bg-rose-100 dark:hover:bg-rose-900/40 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer shrink-0"
                       title="Suspend / Delist Student"
                     >
                       <Ban className="w-3.5 h-3.5" />
@@ -421,31 +421,31 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
 
       {/* VIEW MODE 2: AUTO-FITTING COMPACT TABLE (Zero horizontal scroll) */}
       {viewMode === 'table' && (
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700 overflow-hidden">
           <table className="w-full text-left text-xs table-auto">
             <thead>
-              <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-semibold">
+              <tr className="bg-slate-50/80 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 font-semibold">
                 <th className="py-3 px-4 w-[32%]">Student Profile & Academic</th>
                 <th className="py-3 px-4 w-[24%]">Verified Skills & AST Integrity</th>
                 <th className="py-3 px-4 w-[24%]">Compliance & Status</th>
                 <th className="py-3 px-4 w-[20%] text-right">Admin Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="py-8 text-center text-slate-400">
+                  <td colSpan={4} className="py-8 text-center text-slate-400 dark:text-slate-500">
                     No students matching the current filter.
                   </td>
                 </tr>
               ) : (
                 filtered.map(student => (
-                  <tr key={student.id} className={`transition-colors ${student.isDelisted ? 'bg-rose-50/30' : 'hover:bg-slate-50/60'}`}>
+                  <tr key={student.id} className={`transition-colors ${student.isDelisted ? 'bg-rose-50/30 dark:bg-rose-900/20' : 'hover:bg-slate-50/60 dark:hover:bg-slate-800/40'}`}>
                     {/* Col 1: Student Profile & Academic */}
                     <td className="py-3.5 px-4">
                       <div className="flex items-start gap-3">
                         <div className={`w-8 h-8 rounded-full font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 ${
-                          student.isDelisted ? 'bg-rose-200 text-rose-800' : 'bg-indigo-100 text-indigo-700'
+                          student.isDelisted ? 'bg-rose-200 dark:bg-rose-800 text-rose-800 dark:text-rose-200' : 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300'
                         }`}>
                           {student.avatar}
                         </div>
@@ -454,12 +454,12 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
                             onClick={() => setSelectedStudentForData(student)}
                             className="text-left group cursor-pointer block"
                           >
-                            <span className="font-bold text-slate-900 group-hover:text-indigo-600 transition-colors underline decoration-slate-300 underline-offset-2">
+                            <span className="font-bold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2">
                               {student.name}
                             </span>
                           </button>
-                          <div className="text-[11px] text-slate-400 mt-0.5 truncate">{student.email}</div>
-                          <div className="text-[11px] text-slate-600 mt-0.5">
+                          <div className="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5 truncate">{student.email}</div>
+                          <div className="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5">
                             <span className="font-semibold">{student.college}</span> • {student.degree} (CGPA: {student.cgpa})
                           </div>
                         </div>
@@ -469,19 +469,19 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
                     {/* Col 2: Verified Skills & AST Integrity */}
                     <td className="py-3.5 px-4 align-top">
                       <div className="flex items-center gap-1.5 flex-wrap">
-                        <span className="inline-flex items-center gap-1 font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded text-[11px] border border-indigo-100">
+                        <span className="inline-flex items-center gap-1 font-bold text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-900/40 px-2 py-0.5 rounded text-[11px] border border-indigo-100 dark:border-indigo-800">
                           <Award className="w-3 h-3" />
                           {student.skillsVerified} Verified
                         </span>
                         <span className={`font-bold text-[11px] px-2 py-0.5 rounded ${
-                          student.originalityScore > 75 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'
+                          student.originalityScore > 75 ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800' : 'bg-rose-50 dark:bg-rose-900/20 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800'
                         }`}>
                           {student.originalityScore}% AST Original
                         </span>
                       </div>
-                      <div className="flex flex-wrap gap-1 mt-1 text-[10px] text-slate-500">
+                      <div className="flex flex-wrap gap-1 mt-1 text-[10px] text-slate-500 dark:text-slate-400">
                         {student.skillsList.slice(0, 3).map((sk, i) => (
-                          <span key={i} className="px-1.5 py-0.2 rounded bg-slate-100 text-slate-600">{sk}</span>
+                          <span key={i} className="px-1.5 py-0.2 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">{sk}</span>
                         ))}
                       </div>
                     </td>
@@ -490,30 +490,30 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
                     <td className="py-3.5 px-4 align-top">
                       {student.isDelisted ? (
                         <div>
-                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-300">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 dark:bg-rose-900/40 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-700">
                             <Ban className="w-3 h-3" />
                             Delisted
                           </span>
                           {student.delistReason && (
-                            <p className="text-[10px] text-rose-700 mt-0.5 font-medium line-clamp-1" title={student.delistReason}>
+                            <p className="text-[10px] text-rose-700 dark:text-rose-300 mt-0.5 font-medium line-clamp-1" title={student.delistReason}>
                               {student.delistReason}
                             </p>
                           )}
                         </div>
                       ) : student.riskStatus === 'suspicious' ? (
                         <div>
-                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700">
                             <AlertTriangle className="w-3 h-3" />
                             Flagged Profile
                           </span>
                           {student.flagReason && (
-                            <p className="text-[10px] text-amber-800 mt-0.5 font-medium line-clamp-1" title={student.flagReason}>
+                            <p className="text-[10px] text-amber-800 dark:text-amber-300 mt-0.5 font-medium line-clamp-1" title={student.flagReason}>
                               {student.flagReason}
                             </p>
                           )}
                         </div>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
                           <CheckCircle2 className="w-3 h-3" />
                           Clean Record
                         </span>
@@ -525,7 +525,7 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => setSelectedStudentForData(student)}
-                          className="px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-[11px] font-semibold transition-colors flex items-center gap-1 cursor-pointer"
+                          className="px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-900/40 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 text-[11px] font-semibold transition-colors flex items-center gap-1 cursor-pointer"
                         >
                           <Eye className="w-3 h-3" />
                           <span>Dossier</span>
@@ -534,7 +534,7 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
                         {activeSubTab === 'suspicious' && student.riskStatus === 'suspicious' && (
                           <button
                             onClick={() => handleDismissAlert(student)}
-                            className="px-2 py-1 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 text-[11px] font-medium transition-colors cursor-pointer"
+                            className="px-2 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-[11px] font-medium transition-colors cursor-pointer"
                             title="Dismiss alert"
                           >
                             Dismiss
@@ -552,7 +552,7 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
                         ) : (
                           <button
                             onClick={() => handleOpenDelistModal(student)}
-                            className="px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 text-[11px] font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+                            className="px-2.5 py-1 rounded-lg bg-rose-50 dark:bg-rose-900/20 hover:bg-rose-100 dark:hover:bg-rose-900/40 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-[11px] font-semibold flex items-center gap-1 transition-colors cursor-pointer"
                             title="Delist student"
                           >
                             <Ban className="w-3 h-3" />
@@ -586,30 +586,30 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
       {/* Delist Confirmation Modal */}
       {delistingStudent && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
             <div className="flex items-center gap-3 text-rose-600">
-              <div className="w-10 h-10 rounded-xl bg-rose-100 flex items-center justify-center shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-rose-100 dark:bg-rose-900/40 flex items-center justify-center shrink-0">
                 <Ban className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-slate-900">Delist Student Account</h3>
-                <p className="text-xs text-slate-500">Revoke network access and placement opportunities.</p>
+                <h3 className="text-base font-bold text-slate-900 dark:text-white">Delist Student Account</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Revoke network access and placement opportunities.</p>
               </div>
             </div>
 
-            <p className="text-xs text-slate-600">
-              You are about to delist <span className="font-bold text-slate-900">{delistingStudent.name}</span> ({delistingStudent.email}) from SkillBridge. Delisted students cannot apply to jobs or share verified skill credentials.
+            <p className="text-xs text-slate-600 dark:text-slate-300">
+              You are about to delist <span className="font-bold text-slate-900 dark:text-slate-100">{delistingStudent.name}</span> ({delistingStudent.email}) from SkillBridge. Delisted students cannot apply to jobs or share verified skill credentials.
             </p>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Reason for Delisting:
               </label>
               <textarea
                 value={customDelistReason}
                 onChange={(e) => setCustomDelistReason(e.target.value)}
                 rows={3}
-                className="w-full p-2.5 rounded-xl border border-slate-200 text-xs text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-rose-400"
+                className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs text-slate-800 dark:text-slate-200 focus:outline-hidden focus:ring-2 focus:ring-rose-400"
                 placeholder="Enter infraction description..."
               />
             </div>
@@ -617,7 +617,7 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({
             <div className="flex items-center justify-end gap-2 pt-2">
               <button
                 onClick={() => setDelistingStudent(null)}
-                className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold"
+                className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold"
               >
                 Cancel
               </button>

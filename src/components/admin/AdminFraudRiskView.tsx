@@ -64,16 +64,16 @@ export const AdminFraudRiskView: React.FC<AdminFraudRiskViewProps> = ({ initialS
   return (
     <div className="space-y-6 w-full pb-10">
       {/* Header */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-700 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold text-slate-900">Fraud Prevention & Platform Integrity</h1>
-            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200 flex items-center gap-1">
+            <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Fraud Prevention & Platform Integrity</h1>
+            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800 flex items-center gap-1">
               <ShieldAlert className="w-3.5 h-3.5" />
               18 Active Integrity Alerts
             </span>
           </div>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Automated AST code clone detection, credential cryptographic hash audits, and behavioral fraud telemetry.
           </p>
         </div>
@@ -89,11 +89,11 @@ export const AdminFraudRiskView: React.FC<AdminFraudRiskViewProps> = ({ initialS
       )}
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 bg-white p-2 rounded-2xl border border-slate-200/80 shadow-2xs">
+      <div className="flex items-center gap-2 bg-white dark:bg-slate-900 p-2 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-2xs">
         <button
           onClick={() => setActiveTab('all')}
           className={`px-4 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-            activeTab === 'all' ? 'bg-rose-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+            activeTab === 'all' ? 'bg-rose-600 text-white shadow-xs' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
           }`}
         >
           All Risk Alerts ({risks.length})
@@ -101,7 +101,7 @@ export const AdminFraudRiskView: React.FC<AdminFraudRiskViewProps> = ({ initialS
         <button
           onClick={() => setActiveTab('resume')}
           className={`px-4 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-            activeTab === 'resume' ? 'bg-rose-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+            activeTab === 'resume' ? 'bg-rose-600 text-white shadow-xs' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
           }`}
         >
           Resume & Experience Fraud
@@ -109,7 +109,7 @@ export const AdminFraudRiskView: React.FC<AdminFraudRiskViewProps> = ({ initialS
         <button
           onClick={() => setActiveTab('skills')}
           className={`px-4 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-            activeTab === 'skills' ? 'bg-rose-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+            activeTab === 'skills' ? 'bg-rose-600 text-white shadow-xs' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
           }`}
         >
           AST Code Clone & Skill Mismatches
@@ -121,38 +121,38 @@ export const AdminFraudRiskView: React.FC<AdminFraudRiskViewProps> = ({ initialS
         {filtered.map(item => (
           <div 
             key={item.id} 
-            className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 hover:border-rose-300 transition-all flex flex-col justify-between"
+            className="bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-slate-200/80 dark:border-slate-700 hover:border-rose-300 dark:hover:border-rose-800 transition-all flex flex-col justify-between"
           >
             <div>
               <div className="flex items-start justify-between gap-2 mb-2">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-xl bg-rose-50 border border-rose-200 text-rose-600 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0">
                     <AlertTriangle className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-rose-600">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400">
                       {item.category}
                     </span>
-                    <h2 className="text-sm font-bold text-slate-900 leading-tight">
+                    <h2 className="text-sm font-bold text-slate-900 dark:text-white leading-tight">
                       {item.targetUser}
                     </h2>
                   </div>
                 </div>
 
                 <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                  item.severity === 'Critical' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800'
+                  item.severity === 'Critical' ? 'bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300' : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
                 }`}>
                   {item.severity}
                 </span>
               </div>
 
-              <p className="text-xs text-slate-600 leading-relaxed my-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed my-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
                 {item.description}
               </p>
             </div>
 
-            <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-              <span className="text-[11px] text-slate-400">
+            <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <span className="text-[11px] text-slate-400 dark:text-slate-500">
                 Detected {item.detectedAt}
               </span>
 
@@ -161,7 +161,7 @@ export const AdminFraudRiskView: React.FC<AdminFraudRiskViewProps> = ({ initialS
                   <>
                     <button
                       onClick={() => handleResolve(item.id, 'clear')}
-                      className="px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold"
+                      className="px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/40 text-slate-700 dark:text-slate-300 text-xs font-semibold"
                     >
                       Dismiss
                     </button>
@@ -173,7 +173,7 @@ export const AdminFraudRiskView: React.FC<AdminFraudRiskViewProps> = ({ initialS
                     </button>
                   </>
                 ) : (
-                  <span className="text-xs font-bold text-slate-500">
+                  <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
                     Status: {item.status}
                   </span>
                 )}
