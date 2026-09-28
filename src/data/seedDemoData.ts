@@ -772,11 +772,16 @@ const seedSessions: UserLoginSession[] = [
 // ==========================================
 
 const seedApprovalRecords: ApprovalRecord[] = [
-  { id: 'seed-appr-com1', name: 'TechNova Solutions', role: 'company', email: 'hr@technova.example', status: 'active', registeredAt: 'Sep 10, 2026', approvedAt: 'Sep 12, 2026' },
-  { id: 'seed-appr-com2', name: 'CloudMatrix', role: 'company', email: 'careers@cloudmatrix.example', status: 'active', registeredAt: 'Sep 18, 2026', approvedAt: 'Sep 20, 2026' },
-  { id: 'seed-appr-com3', name: 'NeuroSpark AI', role: 'company', email: 'recruit@neurospark.example', status: 'pending_approval', registeredAt: 'Sep 25, 2026' },
-  { id: 'seed-appr-uni1', name: 'Institute of Technology, Jodhpur', role: 'institution', email: 'tpo@itjodhpur.ac.in', status: 'active', registeredAt: 'Aug 01, 2026', approvedAt: 'Aug 03, 2026' },
-  { id: 'seed-appr-stu1', name: 'Harshit Seth', role: 'student', email: 'harshitseth.work@gmail.com', status: 'active', registeredAt: 'Sep 01, 2026', approvedAt: 'Sep 01, 2026' },
+  { id: 'COM1', name: 'TechNova Solutions', role: 'company', email: 'talent@technova.com', status: 'active', registeredAt: 'Sep 10, 2026', approvedAt: 'Sep 12, 2026' },
+  { id: 'COM2', name: 'DataHub Solutions', role: 'company', email: 'recruiter@datahub.io', status: 'active', registeredAt: 'Sep 18, 2026', approvedAt: 'Sep 20, 2026' },
+  { id: 'COM3', name: 'DesignCraft Studios', role: 'company', email: 'jobs@designcraft.com', status: 'active', registeredAt: 'Sep 22, 2026', approvedAt: 'Sep 24, 2026' },
+  { id: 'COM6', name: 'ZetaEdge Technologies', role: 'company', email: 'hr@zetaedge.tech', status: 'pending_approval', registeredAt: 'Sep 25, 2026' },
+  { id: 'COM7', name: 'CloudScale Corp', role: 'company', email: 'ops@cloudscale.net', status: 'pending_approval', registeredAt: 'Sep 26, 2026' },
+  { id: 'UNI1', name: 'ABC University', role: 'institution', email: 'tpo@abc.edu', status: 'active', registeredAt: 'Aug 01, 2026', approvedAt: 'Aug 03, 2026' },
+  { id: 'UNI2', name: 'XYZ Institute of Tech', role: 'institution', email: 'tpo@xyz.ac.in', status: 'active', registeredAt: 'Aug 05, 2026', approvedAt: 'Aug 07, 2026' },
+  { id: 'UNI6', name: 'Heritage Institute of Science', role: 'institution', email: 'tpo@heritage.ac.in', status: 'pending_approval', registeredAt: 'Sep 27, 2026' },
+  { id: 'UNI7', name: 'Apex National Academy', role: 'institution', email: 'registrations@apex.edu', status: 'pending_approval', registeredAt: 'Sep 28, 2026' },
+  { id: 'STU101', name: 'Harshit Seth', role: 'student', email: 'harshit.s@itj.ac.in', status: 'active', registeredAt: 'Sep 01, 2026', approvedAt: 'Sep 01, 2026' },
 ];
 
 // ==========================================
