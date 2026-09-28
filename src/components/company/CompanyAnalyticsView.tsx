@@ -214,7 +214,7 @@ export const CompanyAnalyticsView: React.FC = () => {
             <span className="font-bold">Automated Feedback Shared with University TPOs ({activeScope.label}):</span>
             <p className="text-blue-900/80 leading-relaxed">
               {sortedSkills[0]?.percentage || 0}% of applicants in this segment lack {sortedSkills[0]?.skill || 'critical skill'} experience. 
-              This aggregate feedback has been synced to the {scopeKey === 'college' ? selectedCollege : scopeKey === 'off_campus' ? 'off-campus' : 'Institute of Technology, Jodhpur'} curriculum gap tracker to help update upcoming lab modules.
+              This aggregate feedback has been synced to the {scopeKey === 'college' ? selectedCollege : scopeKey === 'off_campus' ? 'off-campus' : 'MBM University, Jodhpur'} curriculum gap tracker to help update upcoming lab modules.
             </p>
           </div>
         </div>

@@ -208,7 +208,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       inactiveIcon: 'text-slate-400 group-hover:text-teal-700 dark:text-slate-500 dark:group-hover:text-teal-400',
       avatarBg: 'bg-[#0F766E] text-white shadow-xs',
       badgeBg: 'bg-[#E8F7F3] text-[#0F766E] border border-[#BCE5DC]',
-      name: 'IIT / IT Jodhpur',
+      name: 'MBM University, Jodhpur',
       detail: 'Training & Placement Office',
       roleLabel: 'Institution / TPO',
       initials: 'ITJ',

@@ -343,8 +343,8 @@ export const CollegeFeedbackView: React.FC<CollegeFeedbackViewProps> = ({ onNavi
   };
 
   const handleAcknowledge = (id: string, currentCollege: string) => {
-    const note = `Acknowledged by TPO Dr. Sharma (Institute of Technology, Jodhpur): Lab syllabus and academic electives have been reviewed and calibrated based on your feedback.`;
-    updateBatchFeedbackStatus(id, 'Acknowledged by College', note, 'Dr. Sharma (Dean TPO, Institute of Technology, Jodhpur)');
+    const note = `Acknowledged by TPO Dr. Sharma (MBM University, Jodhpur): Lab syllabus and academic electives have been reviewed and calibrated based on your feedback.`;
+    updateBatchFeedbackStatus(id, 'Acknowledged by College', note, 'Dr. Sharma (Dean TPO, MBM University, Jodhpur)');
     setToastMessage(`✓ Acknowledged feedback from company. Official response dispatched to Company Portal!`);
     setTimeout(() => setToastMessage(null), 4500);
   };
@@ -355,7 +355,7 @@ export const CollegeFeedbackView: React.FC<CollegeFeedbackViewProps> = ({ onNavi
       id, 
       'Curriculum Action Initiated', 
       tpoResponseText.trim(),
-      'Dr. Sharma (Dean TPO, Institute of Technology, Jodhpur)'
+      'Dr. Sharma (Dean TPO, MBM University, Jodhpur)'
     );
     setRespondingFeedbackId(null);
     setTpoResponseText('');

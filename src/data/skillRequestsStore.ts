@@ -31,7 +31,7 @@ export const addStudentSkillRequest = (
   category: Skill['category'],
   reason: string,
   studentName = 'Harshit Seth',
-  collegeName = 'Institute of Technology, Jodhpur'
+  collegeName = 'MBM University, Jodhpur'
 ): StudentSkillRequest => {
   const current = loadSkillRequests();
   const newRequest: StudentSkillRequest = {

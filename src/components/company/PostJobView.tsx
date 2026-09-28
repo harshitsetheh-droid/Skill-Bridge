@@ -27,7 +27,7 @@ interface SkillTag {
 }
 
 const availableUniversities = [
-  'Institute of Technology, Jodhpur',
+  'MBM University, Jodhpur',
   'ABC University',
   'XYZ Institute of Tech',
   'Global Engineering College',
@@ -46,7 +46,7 @@ export const PostJobView: React.FC = () => {
 
   // Campus Scope & University Targeting (USER MANDATE)
   const [campusRouting, setCampusRouting] = useState<'on_campus' | 'off_campus'>('on_campus');
-  const [selectedUniversity, setSelectedUniversity] = useState('Institute of Technology, Jodhpur');
+  const [selectedUniversity, setSelectedUniversity] = useState('MBM University, Jodhpur');
   const [driveStartDate, setDriveStartDate] = useState('2026-10-18');
   const [driveEndDate, setDriveEndDate] = useState('2026-10-21');
   const [minCgpa, setMinCgpa] = useState('7.5');

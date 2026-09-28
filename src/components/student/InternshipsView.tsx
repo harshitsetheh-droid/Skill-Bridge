@@ -363,7 +363,7 @@ export const InternshipsView: React.FC<InternshipsViewProps> = ({ onNavigateTab 
                   {isOnCampus ? (
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 text-[11px] font-bold">
                       <GraduationCap className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-                      <span>On-Campus Drive • {job.targetUniversity || 'IT Jodhpur'}</span>
+                      <span>On-Campus Drive • {job.targetUniversity || 'MBM University, Jodhpur'}</span>
                     </span>
                   ) : (
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-[11px] font-medium">

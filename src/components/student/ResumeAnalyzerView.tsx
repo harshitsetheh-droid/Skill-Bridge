@@ -351,7 +351,7 @@ export const ResumeAnalyzerView: React.FC = () => {
         candidateName: currentUserTargetName,
         email: 'harshit.seth@itj.ac.in',
         phone: '+91 98765 43210',
-        education: 'B.Tech Computer Science & Engineering • CGPA: 8.9 / 10.0 • IT Jodhpur',
+        education: 'B.Tech Computer Science & Engineering • CGPA: 8.9 / 10.0 • MBM University, Jodhpur',
         verifiedProjectsCount: 3,
         status: 'active',
         rawHighlights: [
@@ -1162,7 +1162,7 @@ export const ResumeAnalyzerView: React.FC = () => {
                       <span className="font-semibold">B.Tech Computer Science & Engineering</span>
                       <span>2022 - 2026</span>
                     </div>
-                    <div className="text-slate-500 dark:text-slate-400">Institute of Technology, Jodhpur • CGPA: 8.9 / 10.0</div>
+                    <div className="text-slate-500 dark:text-slate-400">MBM University, Jodhpur • CGPA: 8.9 / 10.0</div>
                   </div>
 
                   <div>

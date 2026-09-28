@@ -250,7 +250,7 @@ class StudentApplicationsStore {
       id: `sel-direct-${Date.now()}`,
       studentName: details.studentName,
       rollNumber: details.rollNumber,
-      collegeName: 'Institute of Technology, Jodhpur',
+      collegeName: 'MBM University, Jodhpur',
       branch: details.branch,
       cgpa: details.cgpa || '8.9',
       avatar: details.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',

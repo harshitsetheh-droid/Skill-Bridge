@@ -18,7 +18,7 @@ export const initialStudentData = {
   email: 'harshitseth.work@gmail.com',
   username: 'harshitseth',
   branch: 'Computer Science',
-  college: 'Institute of Technology, Jodhpur',
+  college: 'MBM University, Jodhpur',
   year: 'Final Year (2026-27)',
   cgpa: '8.9',
   readinessScore: 86,
@@ -52,7 +52,7 @@ export const courseRecommendations: CourseRecommendation[] = [
     matchBoost: 18,
     rating: 4.7,
     enrollUrl: 'https://udemy.com/course/docker-k8s',
-    prescribedByCollege: 'Institute of Technology, Jodhpur',
+    prescribedByCollege: 'MBM University, Jodhpur',
     companyFeedbackSource: 'CloudMatrix',
     feedbackQuote: 'Top missing skill across the batch — hands-on containerization is mandatory.',
   },
@@ -66,7 +66,7 @@ export const courseRecommendations: CourseRecommendation[] = [
     matchBoost: 22,
     rating: 4.8,
     enrollUrl: 'https://bytebytego.com',
-    prescribedByCollege: 'Institute of Technology, Jodhpur',
+    prescribedByCollege: 'MBM University, Jodhpur',
     companyFeedbackSource: 'TechNova Solutions',
     feedbackQuote: 'Candidates need stronger distributed-systems reasoning in final rounds.',
   },
@@ -122,7 +122,7 @@ export const initialCandidates: Candidate[] = [
     anonymousId: 'sb-cand-8841',
     name: 'Harshit Seth',
     rollNumber: '22BCSE104',
-    college: 'Institute of Technology, Jodhpur',
+    college: 'MBM University, Jodhpur',
     branch: 'CSE',
     year: '2027',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
@@ -156,7 +156,7 @@ export const initialCandidates: Candidate[] = [
     anonymousId: 'sb-cand-9102',
     name: 'Neha Agarwal',
     rollNumber: '22BCSE101',
-    college: 'Institute of Technology, Jodhpur',
+    college: 'MBM University, Jodhpur',
     branch: 'CSE',
     year: '2027',
     avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
@@ -188,7 +188,7 @@ export const initialCandidates: Candidate[] = [
     anonymousId: 'sb-cand-7731',
     name: 'Aman Kumar',
     rollNumber: '22BCSE103',
-    college: 'Institute of Technology, Jodhpur',
+    college: 'MBM University, Jodhpur',
     branch: 'CSE',
     year: '2027',
     avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
@@ -220,7 +220,7 @@ export const initialCandidates: Candidate[] = [
     anonymousId: 'sb-cand-6650',
     name: 'Sneha Patel',
     rollNumber: '22BCSE107',
-    college: 'Institute of Technology, Jodhpur',
+    college: 'MBM University, Jodhpur',
     branch: 'CSE',
     year: '2027',
     avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
@@ -252,7 +252,7 @@ export const initialCandidates: Candidate[] = [
     anonymousId: 'sb-cand-5519',
     name: 'Priya Verma',
     rollNumber: '22BCSE105',
-    college: 'Institute of Technology, Jodhpur',
+    college: 'MBM University, Jodhpur',
     branch: 'CSE',
     year: '2027',
     avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&auto=format&fit=crop&q=80',
@@ -315,10 +315,10 @@ export const talentSkillGapData: {
   },
   colleges: [
     {
-      name: 'Institute of Technology, Jodhpur',
+      name: 'MBM University, Jodhpur',
       scope: {
         key: 'college-itj',
-        label: 'Institute of Technology, Jodhpur',
+        label: 'MBM University, Jodhpur',
         applicants: 88,
         skills: [
           { skill: 'Docker & Containers', count: 41, applicantsInGroup: 88, percentage: 47 },
@@ -390,7 +390,7 @@ export const talentSkillGapData: {
 };
 
 export const initialInstitutionData = {
-  name: 'Institute of Technology, Jodhpur',
+  name: 'MBM University, Jodhpur',
   accreditation: 'NAAC A+ • UGC Autonomous',
   stats: {
     totalStudents: 1984,

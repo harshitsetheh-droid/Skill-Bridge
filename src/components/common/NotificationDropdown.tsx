@@ -365,7 +365,7 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
                   onClick={() =>
                     triggerSim('College Approach → Company', () =>
                       notifyCompanyOfCollegeApproach({
-                        collegeName: 'Institute of Technology, Jodhpur',
+                        collegeName: 'MBM University, Jodhpur',
                         tpoName: 'Dr. R. K. Sharma',
                         targetBatch: 'Class of 2026',
                         targetBranches: ['CSE', 'AI-DS'],
@@ -397,7 +397,7 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
                   onClick={() =>
                     triggerSim('Company Accepts College Request', () =>
                       notifyCollegeOfProposalDecision({
-                        collegeName: 'Institute of Technology, Jodhpur',
+                        collegeName: 'MBM University, Jodhpur',
                         companyName: 'TechNova Solutions',
                         isApproved: true,
                         confirmedDates: 'Nov 12 - Nov 15, 2026',
@@ -432,7 +432,7 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
                   onClick={() =>
                     triggerSim('TPO Acts on Feedback → Company', () =>
                       notifyCompanyOfTpoFeedbackAction({
-                        collegeName: 'Institute of Technology, Jodhpur',
+                        collegeName: 'MBM University, Jodhpur',
                         companyName: 'TechNova Solutions',
                         department: 'CSE Department',
                         status: 'Curriculum Action Initiated',

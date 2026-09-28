@@ -105,7 +105,7 @@ export const StudentCompaniesView: React.FC<StudentCompaniesViewProps> = ({ onNa
         applicantsCount: 0,
         deadline: company.currentOrNextDriveDate,
         campusType: 'on_campus',
-        targetUniversity: 'Institute of Technology, Jodhpur',
+        targetUniversity: 'MBM University, Jodhpur',
         driveStartDate: company.currentOrNextDriveDate,
         tpoApprovalStatus: 'approved',
       };
@@ -144,7 +144,7 @@ export const StudentCompaniesView: React.FC<StudentCompaniesViewProps> = ({ onNa
               <span className="px-2.5 py-0.5 rounded-md bg-indigo-50 dark:bg-indigo-950/80 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 text-[11px] font-bold uppercase tracking-wider">
                 Campus Placement Directory
               </span>
-              <span className="text-xs text-slate-400 dark:text-slate-500">• Institute of Technology, Jodhpur</span>
+              <span className="text-xs text-slate-400 dark:text-slate-500">• MBM University, Jodhpur</span>
             </div>
             <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
               Recruiting Companies & Campus Drives

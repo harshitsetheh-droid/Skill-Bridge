@@ -48,7 +48,7 @@ export const CompanyFeedbackView: React.FC = () => {
   const [replyText, setReplyText] = useState('');
 
   // Form State for Sending Feedback to College
-  const [targetCollege, setTargetCollege] = useState('Institute of Technology, Jodhpur');
+  const [targetCollege, setTargetCollege] = useState('MBM University, Jodhpur');
   const [targetBatch, setTargetBatch] = useState('Batch 2026');
   const [targetDepartment, setTargetDepartment] = useState('Computer Science & Engineering');
   const [hiringDriveTitle, setHiringDriveTitle] = useState('Fall 2026 Campus Placement & Internship Drive');
@@ -892,7 +892,7 @@ export const CompanyFeedbackView: React.FC = () => {
                     className="w-full text-xs px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200"
                     required
                   >
-                    <option value="Institute of Technology, Jodhpur">Institute of Technology, Jodhpur</option>
+                    <option value="MBM University, Jodhpur">MBM University, Jodhpur</option>
                     <option value="Global Engineering College">Global Engineering College</option>
                     <option value="Delhi Technological Institute">Delhi Technological Institute</option>
                     <option value="National Institute of Engineering">National Institute of Engineering</option>

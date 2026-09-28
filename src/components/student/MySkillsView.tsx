@@ -180,7 +180,7 @@ export const MySkillsView: React.FC = () => {
       requestCategory,
       requestReason.trim(),
       'Harshit Seth',
-      'Institute of Technology, Jodhpur'
+      'MBM University, Jodhpur'
     );
 
     setToastMessage(

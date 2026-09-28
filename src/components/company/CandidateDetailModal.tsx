@@ -644,7 +644,7 @@ export const CandidateDetailModal: React.FC<CandidateDetailModalProps> = ({
                       <span className="font-semibold text-slate-800 dark:text-slate-200">Institutional Email</span>
                     </div>
                     <span className="font-mono text-[11px] text-slate-600 dark:text-slate-400">
-                      {candidate.links?.email || `${candidate.name.toLowerCase().replace(' ', '.')}@itjodhpur.ac.in`}
+                      {candidate.links?.email || `${candidate.name.toLowerCase().replace(' ', '.')}@mbmjodhpur.ac.in`}
                     </span>
                   </div>
                 </div>

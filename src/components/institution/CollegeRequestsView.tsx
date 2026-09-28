@@ -148,7 +148,7 @@ export const CollegeRequestsView: React.FC = () => {
 
     addCollegeApproachRequest({
       collegeId: 'COL-ITJ',
-      collegeName: 'Institute of Technology, Jodhpur',
+      collegeName: 'MBM University, Jodhpur',
       tpoName: 'Dr. R. K. Sharma (Head TPO)',
       tpoEmail: 'tpo@itj.ac.in',
       tpoPhone: '+91 98290 12345',
@@ -265,7 +265,7 @@ export const CollegeRequestsView: React.FC = () => {
               </h1>
               <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950/80 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 text-xs font-bold">
                 <GraduationCap className="w-3.5 h-3.5" />
-                <span>Institute of Technology, Jodhpur</span>
+                <span>MBM University, Jodhpur</span>
               </div>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -792,7 +792,7 @@ export const CollegeRequestsView: React.FC = () => {
                     Dispatch Placement Drive Proposal to Company
                   </h3>
                   <p className="text-xs text-slate-500 dark:text-slate-400">
-                    Institute of Technology, Jodhpur • TPO Corporate Outreach
+                    MBM University, Jodhpur • TPO Corporate Outreach
                   </p>
                 </div>
               </div>

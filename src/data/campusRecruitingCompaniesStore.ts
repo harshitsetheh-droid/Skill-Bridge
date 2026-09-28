@@ -45,7 +45,7 @@ export const campusRecruitingCompaniesData: CampusRecruitingCompany[] = [
       },
     ],
     activeDriveJobId: 'seed-job-technova-frontend',
-    driveVenue: 'Central Seminar Hall, IT Jodhpur',
+    driveVenue: 'Central Seminar Hall, MBM University, Jodhpur',
     tpoCoordinator: 'Dr. Ananya Sharma',
   },
   {
@@ -117,7 +117,7 @@ export const campusRecruitingCompaniesData: CampusRecruitingCompany[] = [
       },
     ],
     activeDriveJobId: 'seed-job-neurospark-ml',
-    driveVenue: 'Innovation Lab 2, IT Jodhpur',
+    driveVenue: 'Innovation Lab 2, MBM University, Jodhpur',
     tpoCoordinator: 'Dr. Ananya Sharma',
   },
   {
@@ -153,7 +153,7 @@ export const campusRecruitingCompaniesData: CampusRecruitingCompany[] = [
       },
     ],
     activeDriveJobId: 'seed-job-innovate-sde',
-    driveVenue: 'Seminar Hall B, IT Jodhpur',
+    driveVenue: 'Seminar Hall B, MBM University, Jodhpur',
     tpoCoordinator: 'Dr. Ananya Sharma',
   },
   {

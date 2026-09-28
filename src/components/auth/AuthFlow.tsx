@@ -44,13 +44,13 @@ export const AuthFlow: React.FC<AuthFlowProps> = ({
 
   // Form inputs
   const [fullName, setFullName] = useState(
-    selectedRole === 'student' ? 'Harshit Seth' : selectedRole === 'company' ? 'TechNova Solutions' : 'Institute of Technology, Jodhpur'
+    selectedRole === 'student' ? 'Harshit Seth' : selectedRole === 'company' ? 'TechNova Solutions' : 'MBM University, Jodhpur'
   );
   const [email, setEmail] = useState(
     selectedRole === 'student' ? 'harshit.seth@itj.ac.in' : selectedRole === 'company' ? 'talent@technova.io' : 'tpo@itj.ac.in'
   );
   const [username, setUsername] = useState(
-    selectedRole === 'student' ? 'harshitseth' : selectedRole === 'company' ? 'technova_official' : 'itjodhpur_tpo'
+    selectedRole === 'student' ? 'harshitseth' : selectedRole === 'company' ? 'technova_official' : 'mbmjodhpur_tpo'
   );
   const [dob, setDob] = useState('2004-05-14');
   const [password, setPassword] = useState('••••••••••••');
@@ -93,7 +93,7 @@ export const AuthFlow: React.FC<AuthFlowProps> = ({
       accentPill: 'bg-teal-50 text-teal-800 border-teal-200',
       hoverGlow: 'hover:border-teal-600 hover:shadow-[0_0_25px_rgba(15,118,110,0.2)]',
       gradientBtn: 'from-teal-700 to-emerald-800 hover:from-teal-600 hover:to-emerald-700',
-      welcomeMsg: 'Welcome, Institute of Technology, Jodhpur (TPO)!',
+      welcomeMsg: 'Welcome, MBM University, Jodhpur (TPO)!',
       welcomeSub: 'Loading Institutional Curriculum Heatmap & Readiness reports...',
     },
     admin: {

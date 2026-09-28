@@ -148,7 +148,7 @@ export const TopRoleBar: React.FC<TopRoleBarProps> = ({
           >
             <Landmark className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF]" />
             <span className="hidden xs:inline">TPO College</span>
-            <span className="hidden md:inline text-[10px] opacity-75 font-normal">(IIT Jodhpur)</span>
+            <span className="hidden md:inline text-[10px] opacity-75 font-normal">(MBM University, Jodhpur)</span>
           </button>
 
           <button

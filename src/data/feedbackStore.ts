@@ -113,7 +113,7 @@ export const updateBatchFeedbackStatus = (
   id: string,
   status: CompanyBatchFeedback['status'],
   tpoResponseNote?: string,
-  acknowledgedBy: string = 'TPO Office, Institute of Technology, Jodhpur'
+  acknowledgedBy: string = 'TPO Office, MBM University, Jodhpur'
 ) => {
   const current = loadBatchFeedbackList();
   const targetItem = current.find((i) => i.id === id);

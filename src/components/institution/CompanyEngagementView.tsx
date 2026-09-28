@@ -80,7 +80,7 @@ export const CompanyEngagementView: React.FC = () => {
 
   const handleOpenSendInvitation = (company: CampusRecruitingCompany) => {
     setSendInviteCompany(company);
-    setInviteCustomNote(`Dear Campus Hiring Team at ${company.name},\n\nInstitute of Technology, Jodhpur formally invites your esteemed organization for the upcoming ${inviteDriveSession}. Our 2026 graduating batch boasts rigorous verified code defenses and high industry readiness.`);
+    setInviteCustomNote(`Dear Campus Hiring Team at ${company.name},\n\nMBM University, Jodhpur formally invites your esteemed organization for the upcoming ${inviteDriveSession}. Our 2026 graduating batch boasts rigorous verified code defenses and high industry readiness.`);
   };
 
   const handleConfirmSendCompanyInvite = (e: React.FormEvent) => {
@@ -103,7 +103,7 @@ export const CompanyEngagementView: React.FC = () => {
     const dateParts = company.currentOrNextDriveDate.split(' - ');
     setJobDriveStartDate(dateParts[0] || '2026-11-12');
     setJobDriveEndDate(dateParts[1] || '2026-11-15');
-    setJobDescription(`Official on-campus recruitment drive for ${company.name} at Institute of Technology, Jodhpur. Selected candidates join the core engineering team with competitive package and PPO prospects.`);
+    setJobDescription(`Official on-campus recruitment drive for ${company.name} at MBM University, Jodhpur. Selected candidates join the core engineering team with competitive package and PPO prospects.`);
   };
 
   const handleConfirmPostJob = (e: React.FormEvent) => {
@@ -125,7 +125,7 @@ export const CompanyEngagementView: React.FC = () => {
       description: jobDescription,
       deadline: jobDriveEndDate || '2026-11-20',
       campusType: 'on_campus',
-      targetUniversity: 'Institute of Technology, Jodhpur',
+      targetUniversity: 'MBM University, Jodhpur',
       driveStartDate: jobDriveStartDate,
       driveEndDate: jobDriveEndDate,
       tpoApprovalStatus: 'approved'
@@ -1123,7 +1123,7 @@ export const CompanyEngagementView: React.FC = () => {
               </div>
 
               <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                Dispatches an official invitation with a pre-configured employer portal link and verified student readiness overview for Institute of Technology, Jodhpur.
+                Dispatches an official invitation with a pre-configured employer portal link and verified student readiness overview for MBM University, Jodhpur.
               </p>
 
               <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
