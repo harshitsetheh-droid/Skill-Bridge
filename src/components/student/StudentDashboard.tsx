@@ -1,36 +1,133 @@
 import React from 'react';
-import { initialStudentData, initialSkills } from '../../data/mockData';
+import { Skill, Project, Internship } from '../../types';
 import { CircularProgress } from '../common/CircularProgress';
 import { SkillPill } from '../common/SkillPill';
-import { 
-  Award, 
-  Send, 
-  FolderGit2, 
-  ArrowRight, 
-  CheckCircle2, 
-  AlertTriangle, 
+import {
+  Award,
+  Send,
+  FolderGit2,
+  ArrowRight,
+  CheckCircle2,
   Sparkles,
-  TrendingUp,
   Target,
-  Clock,
-  Flame
+  Flame,
+  AlertTriangle
 } from 'lucide-react';
 import { loadDailyStreakState, STREAK_UPDATED_EVENT } from '../../data/dailyQuizStore';
+import { loadStudentSkills, SKILLS_UPDATED_EVENT } from '../../data/skillsStore';
+import { loadProjects, PROJECTS_UPDATED_EVENT } from '../../data/projectsStore';
+import { loadInternships, JOBS_UPDATED_EVENT } from '../../data/jobsStore';
+import { loadStoredResumes, RESUMES_UPDATED_EVENT } from '../../data/resumeStore';
+import { loadCompanyImprovementPaths, IMPROVEMENT_PATHS_UPDATED_EVENT } from '../../data/improvementPathStore';
 
 interface StudentDashboardProps {
   onNavigateTab: (tab: string) => void;
 }
 
+const REFRESH_EVENTS = [
+  STREAK_UPDATED_EVENT,
+  SKILLS_UPDATED_EVENT,
+  PROJECTS_UPDATED_EVENT,
+  JOBS_UPDATED_EVENT,
+  RESUMES_UPDATED_EVENT,
+  IMPROVEMENT_PATHS_UPDATED_EVENT,
+];
+
 export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigateTab }) => {
   const [streakState, setStreakState] = React.useState(loadDailyStreakState);
+  const [skills, setSkills] = React.useState<Skill[]>(() => loadStudentSkills());
+  const [projects, setProjects] = React.useState<Project[]>(() => loadProjects());
+  const [jobs, setJobs] = React.useState<Internship[]>(() => loadInternships());
+  const [resumes, setResumes] = React.useState(() => loadStoredResumes());
+  const [paths, setPaths] = React.useState(() => loadCompanyImprovementPaths());
 
   React.useEffect(() => {
     const handleUpdate = () => {
       setStreakState(loadDailyStreakState());
+      setSkills(loadStudentSkills());
+      setProjects(loadProjects());
+      setJobs(loadInternships());
+      setResumes(loadStoredResumes());
+      setPaths(loadCompanyImprovementPaths());
     };
-    window.addEventListener(STREAK_UPDATED_EVENT, handleUpdate);
-    return () => window.removeEventListener(STREAK_UPDATED_EVENT, handleUpdate);
+    REFRESH_EVENTS.forEach((ev) => window.addEventListener(ev, handleUpdate));
+    return () => REFRESH_EVENTS.forEach((ev) => window.removeEventListener(ev, handleUpdate));
   }, []);
+
+  const verifiedCount = skills.filter((s) => s.status === 'verified').length;
+  const selfClaimedCount = skills.filter((s) => s.status === 'self-claimed' || s.status === 'unverified').length;
+  const appliedJobs = jobs.filter((j) => j.isApplied);
+  const passedProjects = projects.filter((p) => p.status === 'passed');
+  const pendingProjects = projects.filter((p) => p.status === 'pending');
+  const avgOriginality = projects.length
+    ? Math.round(projects.reduce((sum, p) => sum + (p.originalityScore || 0), 0) / projects.length)
+    : 0;
+  const readiness = skills.length
+    ? Math.round(skills.reduce((sum, s) => sum + (s.proficiency || 0), 0) / skills.length)
+    : 0;
+
+  const activeResume = resumes.find((r) => r.status === 'active') || resumes[0];
+  const displayName = activeResume?.candidateName?.trim() || 'Student';
+  const displayEducation = activeResume?.education?.trim() || '';
+  const targetRole = paths[0]?.targetRole || appliedJobs[0]?.title || '';
+
+  const firstUnverified = skills.find((s) => s.status !== 'verified');
+
+  const recommendedActions: { tab: string; title: string; desc: string }[] = [];
+  if (selfClaimedCount > 0 && firstUnverified) {
+    recommendedActions.push({
+      tab: 'skills',
+      title: `Verify ${firstUnverified.name}`,
+      desc: `${selfClaimedCount} self-claimed skill${selfClaimedCount === 1 ? '' : 's'} awaiting quiz verification to earn the verified badge.`,
+    });
+  } else if (skills.length === 0) {
+    recommendedActions.push({
+      tab: 'skills',
+      title: 'Add Your First Skill',
+      desc: 'Build your portfolio matrix by adding skills and completing their checkpoints.',
+    });
+  } else {
+    recommendedActions.push({
+      tab: 'skill-gap',
+      title: 'Check Skill Gaps',
+      desc: 'Compare your verified skills against current target-role requirements.',
+    });
+  }
+
+  if (pendingProjects.length > 0) {
+    recommendedActions.push({
+      tab: 'projects',
+      title: 'Complete Logic Q&A Defense',
+      desc: `${pendingProjects.length} project${pendingProjects.length === 1 ? '' : 's'} pending verification to earn approval.`,
+    });
+  } else if (projects.length === 0) {
+    recommendedActions.push({
+      tab: 'projects',
+      title: 'Add a Project',
+      desc: 'Projects demonstrate real-world coverage for your claimed skills.',
+    });
+  } else {
+    recommendedActions.push({
+      tab: 'projects',
+      title: 'Projects Up to Date',
+      desc: `${projects.length} project${projects.length === 1 ? '' : 's'} recorded with an average originality score of ${avgOriginality}%.`,
+    });
+  }
+
+  if (targetRole) {
+    recommendedActions.push({
+      tab: 'skill-gap',
+      title: `Close ${targetRole} Gap`,
+      desc: 'Review recommended micro-modules to qualify for the target role.',
+    });
+  } else {
+    recommendedActions.push({
+      tab: 'resume',
+      title: 'Refine Your Resume',
+      desc: 'Upload a resume to extract skills, score ATS readiness, and receive recommendations.',
+    });
+  }
+
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
       {/* Top Greeting & Hero Card */}
@@ -42,20 +139,24 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigateTa
           </div>
 
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            Welcome back, {initialStudentData.name} 👋
+            Welcome back, {displayName} 👋
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1.5 leading-relaxed">
-            {initialStudentData.branch} • {initialStudentData.college} (CGPA {initialStudentData.cgpa})
+            {displayEducation
+              ? displayEducation
+              : skills.length > 0
+                ? `${verifiedCount} verified • ${selfClaimedCount} self-claimed skills`
+                : 'Complete your profile and skill matrix to calibrate readiness.'}
           </p>
 
           <div className="mt-4 flex flex-wrap items-center justify-center md:justify-start gap-2">
             <span className="text-xs text-slate-500 font-medium">Target Role:</span>
             <span className="px-2.5 py-1 rounded-full bg-slate-100 text-slate-800 text-xs font-semibold">
-              Frontend & Fullstack Engineer
+              {targetRole || 'Not Set'}
             </span>
             <span className="text-xs text-emerald-600 font-semibold flex items-center gap-1">
               <CheckCircle2 className="w-3.5 h-3.5" />
-              Verified by TPO
+              {verifiedCount} Verified Skill{verifiedCount === 1 ? '' : 's'}
             </span>
           </div>
         </div>
@@ -63,14 +164,14 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigateTa
         {/* Large Circular Readiness Score Ring */}
         <div className="flex flex-col items-center p-4 rounded-2xl bg-slate-50/70 border border-slate-200/60 shrink-0">
           <CircularProgress
-            value={initialStudentData.readinessScore}
+            value={readiness}
             size={140}
             strokeWidth={12}
             accentColor="#4F46E5"
             sublabel="Placement Ready"
           />
           <span className="text-xs text-slate-500 mt-2 font-medium">
-            Top 8% in IT Jodhpur CSE
+            {skills.length > 0 ? `Avg proficiency across ${skills.length} skills` : 'No skills added yet'}
           </span>
         </div>
       </div>
@@ -78,7 +179,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigateTa
       {/* 4 Stat Cards including Daily Streak */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Stat 1: Daily Streak */}
-        <div 
+        <div
           onClick={() => onNavigateTab('daily-questions')}
           className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 hover:border-orange-300 transition-all cursor-pointer group"
         >
@@ -102,7 +203,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigateTa
         </div>
 
         {/* Stat 2: Skills Verified */}
-        <div 
+        <div
           onClick={() => onNavigateTab('skills')}
           className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 hover:border-indigo-300 transition-all cursor-pointer group"
         >
@@ -114,17 +215,21 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigateTa
           </div>
           <div className="mt-3 flex items-baseline gap-2">
             <span className="text-2xl font-black text-slate-900">
-              {initialStudentData.stats.skillsVerified}
+              {verifiedCount}
             </span>
-            <span className="text-xs text-emerald-600 font-semibold">+2 this week</span>
+            <span className="text-xs text-emerald-600 font-semibold">{skills.length} Total</span>
           </div>
           <p className="text-[11px] text-slate-400 mt-1">
-            4 self-claimed awaiting quiz verification
+            {selfClaimedCount > 0
+              ? `${selfClaimedCount} self-claimed awaiting quiz verification`
+              : skills.length > 0
+                ? 'All skills verified'
+                : 'No skills added yet'}
           </p>
         </div>
 
-        {/* Stat 2: Active Applications */}
-        <div 
+        {/* Stat 3: Active Applications */}
+        <div
           onClick={() => onNavigateTab('internships')}
           className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 hover:border-indigo-300 transition-all cursor-pointer group"
         >
@@ -136,17 +241,17 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigateTa
           </div>
           <div className="mt-3 flex items-baseline gap-2">
             <span className="text-2xl font-black text-slate-900">
-              {initialStudentData.stats.activeApplications}
+              {appliedJobs.length}
             </span>
-            <span className="text-xs text-indigo-600 font-semibold">1 Shortlisted</span>
+            <span className="text-xs text-indigo-600 font-semibold">{jobs.length} Live Jobs</span>
           </div>
           <p className="text-[11px] text-slate-400 mt-1">
-            TechNova Frontend Intern interview scheduled
+            {appliedJobs.length > 0 ? `Latest: ${appliedJobs[0].title}` : 'Browse internships to apply'}
           </p>
         </div>
 
-        {/* Stat 3: Projects Reviewed */}
-        <div 
+        {/* Stat 4: Projects Reviewed */}
+        <div
           onClick={() => onNavigateTab('projects')}
           className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 hover:border-indigo-300 transition-all cursor-pointer group"
         >
@@ -158,12 +263,14 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigateTa
           </div>
           <div className="mt-3 flex items-baseline gap-2">
             <span className="text-2xl font-black text-slate-900">
-              {initialStudentData.stats.projectsReviewed}
+              {projects.length}
             </span>
-            <span className="text-xs text-emerald-600 font-semibold">2 Passed ✓</span>
+            <span className="text-xs text-emerald-600 font-semibold">{passedProjects.length} Passed ✓</span>
           </div>
           <p className="text-[11px] text-slate-400 mt-1">
-            Avg originality score: 90.5%
+            {projects.length > 0
+              ? `Avg originality score: ${avgOriginality}%`
+              : 'No projects added yet'}
           </p>
         </div>
       </div>
@@ -193,26 +300,33 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigateTa
 
             {/* Tag Cloud */}
             <div className="flex flex-wrap gap-2 pt-2">
-              {initialSkills.map((skill) => {
-                const variant = 
-                  skill.status === 'verified' ? 'verified' :
-                  skill.status === 'self-claimed' ? 'warning' : 'neutral';
+              {skills.length > 0 ? (
+                skills.map((skill) => {
+                  const variant =
+                    skill.status === 'verified' ? 'verified' :
+                      skill.status === 'self-claimed' ? 'warning' : 'neutral';
 
-                return (
-                  <SkillPill
-                    key={skill.id}
-                    name={skill.name}
-                    variant={variant}
-                    score={skill.proficiency}
-                    onClick={() => onNavigateTab('skills')}
-                  />
-                );
-              })}
+                  return (
+                    <SkillPill
+                      key={skill.id}
+                      name={skill.name}
+                      variant={variant}
+                      score={skill.proficiency}
+                      onClick={() => onNavigateTab('skills')}
+                    />
+                  );
+                })
+              ) : (
+                <div className="flex items-center gap-2 text-xs text-slate-400 py-2">
+                  <AlertTriangle className="w-4 h-4 text-amber-500" />
+                  No skills added yet. Head to Skills to build your portfolio matrix.
+                </div>
+              )}
             </div>
           </div>
 
           <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-            <span>Verified Skills: <strong>8 of 12</strong></span>
+            <span>Verified Skills: <strong>{verifiedCount} of {skills.length}</strong></span>
             <span className="text-indigo-600 font-semibold cursor-pointer" onClick={() => onNavigateTab('skill-gap')}>
               Compare with Target Role →
             </span>
@@ -228,67 +342,42 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigateTa
             <Target className="w-4 h-4 text-indigo-600" />
           </div>
 
-          <div className="space-y-3">
-            {/* Action 1 */}
-            <div 
-              onClick={() => onNavigateTab('skills')}
-              className="p-3.5 rounded-xl border border-indigo-100 bg-indigo-50/40 hover:bg-indigo-50 transition-colors cursor-pointer"
-            >
-              <div className="flex items-start gap-3">
-                <div className="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center shrink-0 text-xs font-bold">
-                  1
+          {recommendedActions.length > 0 ? (
+            <div className="space-y-3">
+              {recommendedActions.map((action, idx) => (
+                <div
+                  key={action.title}
+                  onClick={() => onNavigateTab(action.tab)}
+                  className={`p-3.5 rounded-xl border transition-colors cursor-pointer ${
+                    idx === 0
+                      ? 'border-indigo-100 bg-indigo-50/40 hover:bg-indigo-50'
+                      : 'border-slate-200 hover:border-slate-300 bg-white'
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <div className={`w-7 h-7 rounded-lg text-white flex items-center justify-center shrink-0 text-xs font-bold ${
+                      idx === 0 ? 'bg-indigo-600' : idx === 1 ? 'bg-slate-900' : 'bg-amber-500'
+                    }`}>
+                      {idx + 1}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xs font-bold text-slate-900">
+                        {action.title}
+                      </h3>
+                      <p className="text-[11px] text-slate-500 mt-0.5">
+                        {action.desc}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-xs font-bold text-slate-900">
-                    Verify TypeScript Skill
-                  </h3>
-                  <p className="text-[11px] text-slate-500 mt-0.5">
-                    Take a 3-minute interactive coding quiz to elevate from self-claimed to Verified ✓.
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
-
-            {/* Action 2 */}
-            <div 
-              onClick={() => onNavigateTab('projects')}
-              className="p-3.5 rounded-xl border border-slate-200 hover:border-slate-300 transition-colors cursor-pointer bg-white"
-            >
-              <div className="flex items-start gap-3">
-                <div className="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center shrink-0 text-xs font-bold">
-                  2
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-xs font-bold text-slate-900">
-                    Complete AI Logic Q&A
-                  </h3>
-                  <p className="text-[11px] text-slate-500 mt-0.5">
-                    "Smart Campus Event Hub" is pending logic defense to earn the verified badge.
-                  </p>
-                </div>
-              </div>
+          ) : (
+            <div className="flex items-center gap-2 text-xs text-slate-400 py-2">
+              <AlertTriangle className="w-4 h-4 text-amber-500" />
+              No recommendations yet. Add data to unlock next steps.
             </div>
-
-            {/* Action 3 */}
-            <div 
-              onClick={() => onNavigateTab('skill-gap')}
-              className="p-3.5 rounded-xl border border-slate-200 hover:border-slate-300 transition-colors cursor-pointer bg-white"
-            >
-              <div className="flex items-start gap-3">
-                <div className="w-7 h-7 rounded-lg bg-amber-500 text-white flex items-center justify-center shrink-0 text-xs font-bold">
-                  3
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-xs font-bold text-slate-900">
-                    Close Docker Gap (+14% Match)
-                  </h3>
-                  <p className="text-[11px] text-slate-500 mt-0.5">
-                    Review recommended 6-hour Docker micro-module to qualify for CloudSphere trainee role.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
