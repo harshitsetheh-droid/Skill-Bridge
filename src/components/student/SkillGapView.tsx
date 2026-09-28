@@ -5,6 +5,10 @@ import { loadProjects, PROJECTS_UPDATED_EVENT, checkJobEligibility } from '../..
 import { 
   addSkillToCompanyImprovementPath, 
   isSkillInCompanyPath, 
+  addCompanyImprovementPath,
+  getCompanyImprovementPathByJobId,
+  generateCompanyPathFromJob,
+  isCompanyInImprovementPath,
   IMPROVEMENT_PATHS_UPDATED_EVENT 
 } from '../../data/improvementPathStore';
 import { Internship, Skill, Project } from '../../types';
@@ -85,6 +89,30 @@ export const SkillGapView: React.FC<SkillGapViewProps> = ({ onNavigateTab }) => 
     });
   };
 
+  const handleOpenImprovementPath = () => {
+    if (!targetJob) return;
+
+    let existing = getCompanyImprovementPathByJobId(targetJob.id);
+    if (!existing) {
+      const newPath = generateCompanyPathFromJob(targetJob, skills, projects);
+      addCompanyImprovementPath(newPath);
+      existing = newPath;
+    }
+    setToastInfo({
+      message: existing
+        ? `✓ "${targetJob.company}" Improvement Roadmap generated from your Skill Gap Analysis! Redirecting...`
+        : `✓ "${targetJob.company}" Improvement Roadmap opened!`,
+      pathId: existing?.id,
+      companyName: targetJob.company,
+      roleName: targetJob.title
+    });
+    setTimeout(() => {
+      if (onNavigateTab && existing) {
+        onNavigateTab('improvement-path', existing.id);
+      }
+    }, 500);
+  };
+
   const scoreColor = 
     targetJob && targetJob.matchScore >= 85 ? '#10B981' :
     targetJob && targetJob.matchScore >= 70 ? '#F59E0B' : '#DC2626';
@@ -123,6 +151,18 @@ export const SkillGapView: React.FC<SkillGapViewProps> = ({ onNavigateTab }) => 
               </option>
             ))}
           </select>
+
+          {targetJob && (
+            <button
+              onClick={handleOpenImprovementPath}
+              className="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+              title={`Open or generate targeted improvement roadmap for ${targetJob.company}`}
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>{isCompanyInImprovementPath(targetJob.id) || isCompanyInImprovementPath(targetJob.company) ? 'Open Improvement Path' : 'Create Improvement Path'}</span>
+              <ArrowRight className="w-3 h-3" />
+            </button>
+          )}
         </div>
       </div>
 
