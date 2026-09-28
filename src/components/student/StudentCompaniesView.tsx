@@ -18,12 +18,22 @@ import {
   SlidersHorizontal,
   BookmarkCheck,
   BellRing,
-  Info
+  Info,
+  ArrowRight
 } from 'lucide-react';
 import { campusRecruitingCompaniesData } from '../../data/campusRecruitingCompaniesStore';
-import { CampusRecruitingCompany, Skill, Project } from '../../types';
+import { CampusRecruitingCompany, Skill, Project, Internship } from '../../types';
 import { loadStudentSkills, SKILLS_UPDATED_EVENT } from '../../data/skillsStore';
 import { loadProjects, PROJECTS_UPDATED_EVENT, computeCompanyAtsScore } from '../../data/projectsStore';
+import { loadInternships, JOBS_UPDATED_EVENT } from '../../data/jobsStore';
+import {
+  loadCompanyImprovementPaths,
+  addCompanyImprovementPath,
+  getCompanyImprovementPathByJobId,
+  generateCompanyPathFromJob,
+  isCompanyInImprovementPath,
+  IMPROVEMENT_PATHS_UPDATED_EVENT,
+} from '../../data/improvementPathStore';
 
 interface StudentCompaniesViewProps {
   onNavigateTab?: (tab: string) => void;
@@ -38,17 +48,25 @@ export const StudentCompaniesView: React.FC<StudentCompaniesViewProps> = ({ onNa
   const [alertMessage, setAlertMessage] = useState('');
   const [studentSkills, setStudentSkills] = useState<Skill[]>(() => loadStudentSkills());
   const [projects, setProjects] = useState<Project[]>(() => loadProjects());
+  const [internships, setInternships] = useState<Internship[]>(() => loadInternships());
+  const [companyPaths, setCompanyPaths] = useState(() => loadCompanyImprovementPaths());
 
   useEffect(() => {
     const handleSkillsUpdated = () => setStudentSkills(loadStudentSkills());
     const handleProjectsUpdated = () => setProjects(loadProjects());
+    const handleJobsUpdated = () => setInternships(loadInternships());
+    const handlePathsUpdated = () => setCompanyPaths(loadCompanyImprovementPaths());
 
     window.addEventListener(SKILLS_UPDATED_EVENT, handleSkillsUpdated);
     window.addEventListener(PROJECTS_UPDATED_EVENT, handleProjectsUpdated);
+    window.addEventListener(JOBS_UPDATED_EVENT, handleJobsUpdated);
+    window.addEventListener(IMPROVEMENT_PATHS_UPDATED_EVENT, handlePathsUpdated);
 
     return () => {
       window.removeEventListener(SKILLS_UPDATED_EVENT, handleSkillsUpdated);
       window.removeEventListener(PROJECTS_UPDATED_EVENT, handleProjectsUpdated);
+      window.removeEventListener(JOBS_UPDATED_EVENT, handleJobsUpdated);
+      window.removeEventListener(IMPROVEMENT_PATHS_UPDATED_EVENT, handlePathsUpdated);
     };
   }, []);
 
@@ -64,6 +82,41 @@ export const StudentCompaniesView: React.FC<StudentCompaniesViewProps> = ({ onNa
       setAlertMessage(`Alert scheduled! You will receive notification 24 hours prior to ${name}'s campus session.`);
     }
     setTimeout(() => setAlertMessage(''), 3500);
+  };
+
+  const handleImprovementClick = (company: CampusRecruitingCompany) => {
+    const matchingJob =
+      internships.find((j) => j.id === company.activeDriveJobId) ||
+      internships.find((j) => j.company.toLowerCase() === company.name.toLowerCase());
+    const existing = getCompanyImprovementPathByJobId(company.activeDriveJobId || company.name);
+    if (!existing) {
+      const fallbackJob = matchingJob || {
+        id: company.id,
+        title: company.pastTargetedRoles[0] || 'Software Engineer Trainee',
+        company: company.name,
+        location: company.driveVenue || 'On Campus',
+        type: 'Internship' as const,
+        stipend: company.lastTimePay || company.medianPackage,
+        matchScore: 0,
+        requiredSkills: company.requiredSkills,
+        preferredSkills: [],
+        missingSkills: [],
+        description: company.description || `Campus drive at ${company.name}.`,
+        applicantsCount: 0,
+        deadline: company.currentOrNextDriveDate,
+        campusType: 'on_campus',
+        targetUniversity: 'Institute of Technology, Jodhpur',
+        driveStartDate: company.currentOrNextDriveDate,
+        tpoApprovalStatus: 'approved',
+      };
+      const newPath = generateCompanyPathFromJob(fallbackJob, studentSkills, projects);
+      addCompanyImprovementPath(newPath);
+      setAlertMessage(`✓ "${company.name}" Improvement Roadmap created! Opening roadmap...`);
+      setTimeout(() => { if (onNavigateTab) onNavigateTab('improvement-path', newPath.id); }, 350);
+    } else {
+      setAlertMessage(`Opening "${company.name}" Improvement Roadmap...`);
+      setTimeout(() => { if (onNavigateTab) onNavigateTab('improvement-path', existing.id); }, 250);
+    }
   };
 
   const filteredCompanies = companies.filter((c) => {
@@ -379,6 +432,16 @@ export const StudentCompaniesView: React.FC<StudentCompaniesViewProps> = ({ onNa
 
                 <div className="flex items-center gap-2">
                   <button
+                    onClick={() => handleImprovementClick(company)}
+                    className="px-3 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/70 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900 text-xs font-semibold transition-colors flex items-center gap-1 cursor-pointer"
+                    title={`Open or generate targeted improvement roadmap for ${company.name}`}
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>{isCompanyInImprovementPath(company.activeDriveJobId || company.name) ? 'Improvement Path Added ✓' : 'Improvement Path'}</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+
+                  <button
                     onClick={() => setSelectedCompany(company)}
                     className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 text-slate-700 dark:text-slate-300 hover:text-indigo-800 dark:hover:text-white text-xs font-semibold transition-colors flex items-center gap-1 cursor-pointer"
                   >
@@ -608,6 +671,18 @@ export const StudentCompaniesView: React.FC<StudentCompaniesViewProps> = ({ onNa
                 className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
               >
                 Close
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const company = selectedCompany;
+                  setSelectedCompany(null);
+                  handleImprovementClick(company);
+                }}
+                className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>{isCompanyInImprovementPath(selectedCompany.activeDriveJobId || selectedCompany.name) ? 'Open Improvement Roadmap' : 'Create Improvement Path'}</span>
               </button>
               {(selectedCompany.status === 'currently_visiting' || selectedCompany.status === 'upcoming_visit') && onNavigateTab && (
                 <button
