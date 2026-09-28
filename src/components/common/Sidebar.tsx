@@ -166,7 +166,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     resolvedRole === 'admin' ? adminNav :
     institutionNav;
 
-  // Role-specific styles matching TalentBridge Design System (Signal Garden)
+  // Role-specific styles matching SkillBridge Design System (Signal Garden)
   const roleStyles = {
     student: {
       accentColor: '#4F46E5',

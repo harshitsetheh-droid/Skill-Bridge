@@ -81,7 +81,7 @@ export const TopRoleBar: React.FC<TopRoleBarProps> = ({
             </button>
           )}
 
-          {/* TalentBridge Constellation / Three-Node Bridge Mark */}
+          {/* SkillBridge Constellation / Three-Node Bridge Mark */}
           <div className="w-8 h-8 rounded-lg bg-[#4F46E5] text-white flex items-center justify-center shadow-[0_5px_12px_rgba(79,70,229,0.22)] shrink-0">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="5" cy="17" r="2.5" fill="currentColor" />
@@ -95,7 +95,7 @@ export const TopRoleBar: React.FC<TopRoleBarProps> = ({
           <div className="flex flex-col">
             <div className="flex items-baseline gap-1.5">
               <span className="font-extrabold text-[#1F3048] dark:text-[#F3F6FA] tracking-tight text-base font-display">
-                TalentBridge
+                SkillBridge
               </span>
               <span className="hidden lg:inline-block px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
                 v1.0

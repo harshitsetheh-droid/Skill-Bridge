@@ -1,6 +1,6 @@
-# TalentBridge Backend
+# SkillBridge Backend
 
-Full REST API backend for the TalentBridge campus recruitment platform, built with Express, Prisma, PostgreSQL (Supabase), Supabase Auth, and Google Gemini AI.
+Full REST API backend for the SkillBridge campus recruitment platform, built with Express, Prisma, PostgreSQL (Supabase), Supabase Auth, and Google Gemini AI.
 
 ## Tech Stack
 - **Express** - REST API framework

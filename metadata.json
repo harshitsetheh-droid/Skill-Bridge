@@ -1,5 +1,5 @@
 {
-  "name": "TalentBridge",
+  "name": "SkillBridge",
   "description": "A calm, intelligent skills-to-opportunity workbench connecting Students, Companies, and Institutions with evidence-led skill signals and verified proof-of-work.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

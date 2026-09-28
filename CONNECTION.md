@@ -1,4 +1,4 @@
-# TalentBridge - Cross-Entity Connectivity & Data Flow Architecture (कनेक्शन एवं डेटा प्रवाह)
+# SkillBridge - Cross-Entity Connectivity & Data Flow Architecture (कनेक्शन एवं डेटा प्रवाह)
 
 इस दस्तावेज़ में **Student (छात्र)**, **TPO / Institution (कॉलेज/विश्वविद्यालय)**, **Company / Recruiter (कंपनी)** और **Platform Admin (प्रशासक)** के बीच संपूर्ण कनेक्टिविटी, डेटा शेयरिंग, कौन सा डेटा किस स्क्रीन/ऑप्शन से कहाँ ट्रांसफर होता है, और एडमिन इन तीनों से कैसे डेटा लेता है, इसका संपूर्ण तकनीकी एवं व्यावहारिक विवरण दिया गया है।
 

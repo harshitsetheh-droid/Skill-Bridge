@@ -52,7 +52,7 @@ async function callGemini(prompt) {
 // ─── AST Code Originality Analysis ──────────────────────────
 
 export async function analyzeCodeOriginality({ repoUrl, techStack, title, description }) {
-  const prompt = `You are an expert code plagiarism auditor for a campus placement platform called TalentBridge.
+  const prompt = `You are an expert code plagiarism auditor for a campus placement platform called SkillBridge.
 
 Analyze this student project for code originality and plagiarism:
 

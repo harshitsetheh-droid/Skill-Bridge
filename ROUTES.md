@@ -1,16 +1,16 @@
-# TalentBridge - System Routes & API Architecture
+# SkillBridge - System Routes & API Architecture
 
-This document provides a comprehensive specification of all client-side navigation routes, view tabs, API endpoints, backend services, and reactive event-bus channels within the TalentBridge platform.
+This document provides a comprehensive specification of all client-side navigation routes, view tabs, API endpoints, backend services, and reactive event-bus channels within the SkillBridge platform.
 
 ---
 
 ## 1. High-Level Architecture Overview
 
-TalentBridge operates as a high-performance, responsive React application built with TypeScript, Vite, and Tailwind CSS. The application employs a decoupled client-side reactive store pattern with seamless Express backend API proxy readiness.
+SkillBridge operates as a high-performance, responsive React application built with TypeScript, Vite, and Tailwind CSS. The application employs a decoupled client-side reactive store pattern with seamless Express backend API proxy readiness.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                             TALENTBRIDGE CLIENT                              │
+│                              SKILLBRIDGE CLIENT                              │
 │                                                                             │
 │   ┌───────────────┐  ┌───────────────┐  ┌───────────────┐  ┌────────────┐   │
 │   │  Student View │  │  Company View │  │  TPO (College)│  │ Admin View │   │
@@ -364,7 +364,7 @@ Below is the complete REST API contract used by frontend stores and backend endp
 
 ## 4. Real-Time Reactive Event Bus (`window.dispatchEvent`)
 
-To achieve instant UI responsiveness across decoupled components without unnecessary prop drilling or network polling, TalentBridge utilizes a standard browser CustomEvent reactive bus:
+To achieve instant UI responsiveness across decoupled components without unnecessary prop drilling or network polling, SkillBridge utilizes a standard browser CustomEvent reactive bus:
 
 | Event Name | Dispatch Source | Listeners / Subscribed Views | Trigger Condition |
 | :--- | :--- | :--- | :--- |

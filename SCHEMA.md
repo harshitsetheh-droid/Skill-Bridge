@@ -1,6 +1,6 @@
-# TalentBridge - Database Schema Specification
+# SkillBridge - Database Schema Specification
 
-This document details the complete database schema for the TalentBridge platform. It covers relational definitions (PostgreSQL / Cloud SQL) and NoSQL document representations (Firebase Firestore), including primary keys, foreign key constraints, indexes, check validations, and data lifecycle policies.
+This document details the complete database schema for the SkillBridge platform. It covers relational definitions (PostgreSQL / Cloud SQL) and NoSQL document representations (Firebase Firestore), including primary keys, foreign key constraints, indexes, check validations, and data lifecycle policies.
 
 ---
 
