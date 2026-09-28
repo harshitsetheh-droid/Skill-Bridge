@@ -15,10 +15,11 @@ import {
 } from 'lucide-react';
 import { loadDailyStreakState, STREAK_UPDATED_EVENT } from '../../data/dailyQuizStore';
 import { loadStudentSkills, SKILLS_UPDATED_EVENT } from '../../data/skillsStore';
-import { loadProjects, PROJECTS_UPDATED_EVENT } from '../../data/projectsStore';
+import { loadProjects, PROJECTS_UPDATED_EVENT, computeCompanyAtsScore } from '../../data/projectsStore';
 import { loadInternships, JOBS_UPDATED_EVENT } from '../../data/jobsStore';
 import { loadStoredResumes, RESUMES_UPDATED_EVENT } from '../../data/resumeStore';
 import { loadCompanyImprovementPaths, IMPROVEMENT_PATHS_UPDATED_EVENT } from '../../data/improvementPathStore';
+import { campusRecruitingCompaniesData } from '../../data/campusRecruitingCompaniesStore';
 
 interface StudentDashboardProps {
   onNavigateTab: (tab: string) => void;
@@ -40,6 +41,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigateTa
   const [jobs, setJobs] = React.useState<Internship[]>(() => loadInternships());
   const [resumes, setResumes] = React.useState(() => loadStoredResumes());
   const [paths, setPaths] = React.useState(() => loadCompanyImprovementPaths());
+  const [selectedCompany, setSelectedCompany] = React.useState<string>('overall');
 
   React.useEffect(() => {
     const handleUpdate = () => {
@@ -65,6 +67,49 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigateTa
   const readiness = skills.length
     ? Math.round(skills.reduce((sum, s) => sum + (s.proficiency || 0), 0) / skills.length)
     : 0;
+
+  // Company-wise placement readiness (ATS per company based on its required skills)
+  const companyReadiness = React.useMemo(() => {
+    const jobsByCompany = jobs.filter((j) => j.requiredSkills && j.requiredSkills.length > 0);
+    const knownCompanies = new Map<string, { name: string; roleHints: string[] }>();
+
+    campusRecruitingCompaniesData.forEach((c) => {
+      knownCompanies.set(c.name, { name: c.name, roleHints: c.pastTargetedRoles || [c.industry] });
+    });
+    jobsByCompany.forEach((j) => {
+      if (!knownCompanies.has(j.company)) {
+        knownCompanies.set(j.company, { name: j.company, roleHints: [j.title] });
+      }
+    });
+
+    const list = Array.from(knownCompanies.entries()).map(([name, meta]) => {
+      const requiredSkills =
+        campusRecruitingCompaniesData.find((c) => c.name === name)?.requiredSkills ||
+        jobsByCompany.find((j) => j.company === name)?.requiredSkills ||
+        [];
+      const ats = computeCompanyAtsScore(requiredSkills, skills, projects);
+      return {
+        name,
+        roleHint: meta.roleHints[0] || 'Software Engineering',
+        requiredSkills,
+        atsScore: ats.atsScore,
+        verifiedCount: ats.verifiedCount,
+        requiredCount: ats.requiredCount,
+        projectCount: ats.projectCount,
+      };
+    });
+
+    return list.sort((a, b) => b.atsScore - a.atsScore);
+  }, [jobs, skills, projects]);
+
+  const activeCompany =
+    selectedCompany === 'overall'
+      ? null
+      : companyReadiness.find((c) => c.name === selectedCompany) || null;
+  const displayedReadyValue = activeCompany ? activeCompany.atsScore : readiness;
+  const readyAccentColor = displayedReadyValue >= 85 ? '#10B981' : displayedReadyValue >= 65 ? '#F59E0B' : '#DC2626';
+  const readyStatusLabel =
+    displayedReadyValue >= 85 ? 'Drives Ahead of Play' : displayedReadyValue >= 65 ? 'Near-Ready' : 'Training Needed';
 
   const activeResume = resumes.find((r) => r.status === 'active') || resumes[0];
   const displayName = activeResume?.candidateName?.trim() || 'Student';
@@ -161,18 +206,72 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigateTa
           </div>
         </div>
 
-        {/* Large Circular Readiness Score Ring */}
-        <div className="flex flex-col items-center p-4 rounded-2xl bg-slate-50/70 border border-slate-200/60 shrink-0">
+        {/* Large Circular Readiness Score Ring (Overall or Company-Specific) */}
+        <div className="flex flex-col items-center p-4 rounded-2xl bg-slate-50/70 border border-slate-200/60 shrink-0 w-full max-w-[300px]">
           <CircularProgress
-            value={readiness}
+            value={displayedReadyValue}
             size={140}
             strokeWidth={12}
-            accentColor="#4F46E5"
-            sublabel="Placement Ready"
+            accentColor={readyAccentColor}
+            sublabel={activeCompany ? `Ready: ${activeCompany.name}` : 'Placement Ready'}
           />
           <span className="text-xs text-slate-500 mt-2 font-medium">
-            {skills.length > 0 ? `Avg proficiency across ${skills.length} skills` : 'No skills added yet'}
+            {activeCompany
+              ? `${activeCompany.verifiedCount}/${activeCompany.requiredCount} required skills verified • ${activeCompany.projectCount} projects`
+              : skills.length > 0
+                ? `Avg proficiency across ${skills.length} skills`
+                : 'No skills added yet'}
           </span>
+          <span className={`mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+            displayedReadyValue >= 85
+              ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+              : displayedReadyValue >= 65
+              ? 'bg-amber-50 border-amber-200 text-amber-700'
+              : 'bg-red-50 border-red-200 text-red-700'
+          }`}>
+            {readyStatusLabel}
+          </span>
+
+          {companyReadiness.length > 0 && (
+            <div className="mt-3 pt-3 w-full border-t border-slate-200/70">
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+                Placement Readiness By Company
+              </label>
+              <select
+                value={activeCompany ? activeCompany.name : 'overall'}
+                onChange={(e) => setSelectedCompany(e.target.value)}
+                className="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+              >
+                <option value="overall">Overall (All Companies)</option>
+                {companyReadiness.map((c) => (
+                  <option key={c.name} value={c.name}>
+                    {c.name} — {c.atsScore}%
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {/* Clickable company chips */}
+          <div className="mt-3 w-full flex flex-wrap gap-1.5 justify-center">
+            {companyReadiness.slice(0, 4).map((c) => (
+              <button
+                key={c.name}
+                onClick={() => setSelectedCompany(c.name)}
+                className={`px-2 py-1 rounded-lg text-[10px] font-bold border transition-colors cursor-pointer ${
+                  activeCompany && activeCompany.name === c.name
+                    ? 'bg-indigo-600 border-indigo-600 text-white'
+                    : c.atsScore >= 85
+                    ? 'bg-emerald-50 border-emerald-200 text-emerald-700 hover:bg-emerald-100'
+                    : c.atsScore >= 65
+                    ? 'bg-amber-50 border-amber-200 text-amber-700 hover:bg-amber-100'
+                    : 'bg-red-50 border-red-200 text-red-700 hover:bg-red-100'
+                }`}
+              >
+                {c.name} {c.atsScore}%
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
