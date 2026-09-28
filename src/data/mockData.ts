@@ -287,6 +287,108 @@ export const topMissingSkillsData = [
   { skill: 'GraphQL', count: 78, percentage: 31 },
 ];
 
+export interface MissingSkillSegment {
+  skill: string;
+  count: number;
+  applicantsInGroup: number;
+  percentage: number;
+}
+
+export interface TalentSkillGapScope {
+  key: string;
+  label: string;
+  applicants: number;
+  skills: MissingSkillSegment[];
+}
+
+// Segmented missing-skill analytics: overall pool, per-college, and off-campus applicants
+export const talentSkillGapData: {
+  overall: TalentSkillGapScope;
+  colleges: { name: string; scope: TalentSkillGapScope }[];
+  offCampus: TalentSkillGapScope;
+} = {
+  overall: {
+    key: 'overall',
+    label: 'Overall Applicant Pool',
+    applicants: 248,
+    skills: topMissingSkillsData.map((s) => ({ skill: s.skill, count: s.count, applicantsInGroup: 248, percentage: s.percentage })),
+  },
+  colleges: [
+    {
+      name: 'Institute of Technology, Jodhpur',
+      scope: {
+        key: 'college-itj',
+        label: 'Institute of Technology, Jodhpur',
+        applicants: 88,
+        skills: [
+          { skill: 'Docker & Containers', count: 41, applicantsInGroup: 88, percentage: 47 },
+          { skill: 'Kubernetes', count: 35, applicantsInGroup: 88, percentage: 40 },
+          { skill: 'System Design & High Availability', count: 33, applicantsInGroup: 88, percentage: 38 },
+          { skill: 'Redis & Caching', count: 24, applicantsInGroup: 88, percentage: 27 },
+          { skill: 'GraphQL', count: 18, applicantsInGroup: 88, percentage: 20 },
+        ],
+      },
+    },
+    {
+      name: 'ABC University',
+      scope: {
+        key: 'college-abc',
+        label: 'ABC University',
+        applicants: 61,
+        skills: [
+          { skill: 'System Design & High Availability', count: 40, applicantsInGroup: 61, percentage: 66 },
+          { skill: 'Docker & Containers', count: 38, applicantsInGroup: 61, percentage: 62 },
+          { skill: 'GraphQL', count: 27, applicantsInGroup: 61, percentage: 44 },
+          { skill: 'Kubernetes', count: 25, applicantsInGroup: 61, percentage: 41 },
+          { skill: 'Redis & Caching', count: 22, applicantsInGroup: 61, percentage: 36 },
+        ],
+      },
+    },
+    {
+      name: 'XYZ Institute of Tech',
+      scope: {
+        key: 'college-xyz',
+        label: 'XYZ Institute of Tech',
+        applicants: 54,
+        skills: [
+          { skill: 'Kubernetes', count: 30, applicantsInGroup: 54, percentage: 56 },
+          { skill: 'Docker & Containers', count: 29, applicantsInGroup: 54, percentage: 54 },
+          { skill: 'System Design & High Availability', count: 27, applicantsInGroup: 54, percentage: 50 },
+          { skill: 'Redis & Caching', count: 21, applicantsInGroup: 54, percentage: 39 },
+          { skill: 'GraphQL', count: 15, applicantsInGroup: 54, percentage: 28 },
+        ],
+      },
+    },
+    {
+      name: 'Global Engineering College',
+      scope: {
+        key: 'college-gec',
+        label: 'Global Engineering College',
+        applicants: 45,
+        skills: [
+          { skill: 'Redis & Caching', count: 29, applicantsInGroup: 45, percentage: 64 },
+          { skill: 'System Design & High Availability', count: 29, applicantsInGroup: 45, percentage: 64 },
+          { skill: 'Docker & Containers', count: 33, applicantsInGroup: 45, percentage: 73 },
+          { skill: 'Kubernetes', count: 22, applicantsInGroup: 45, percentage: 49 },
+          { skill: 'GraphQL', count: 18, applicantsInGroup: 45, percentage: 40 },
+        ],
+      },
+    },
+  ],
+  offCampus: {
+    key: 'off_campus',
+    label: 'Off-Campus Pool',
+    applicants: 96,
+    skills: [
+      { skill: 'System Design & High Availability', count: 57, applicantsInGroup: 96, percentage: 59 },
+      { skill: 'Kubernetes', count: 52, applicantsInGroup: 96, percentage: 54 },
+      { skill: 'Docker & Containers', count: 49, applicantsInGroup: 96, percentage: 51 },
+      { skill: 'Redis & Caching', count: 40, applicantsInGroup: 96, percentage: 42 },
+      { skill: 'GraphQL', count: 32, applicantsInGroup: 96, percentage: 33 },
+    ],
+  },
+};
+
 export const initialInstitutionData = {
   name: 'Institute of Technology, Jodhpur',
   accreditation: 'NAAC A+ • UGC Autonomous',
