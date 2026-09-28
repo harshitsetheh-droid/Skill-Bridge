@@ -97,6 +97,24 @@ button:active:not(:disabled), .btn:active:not(:disabled) {
   scrollbar-width: none;
 }
 
+/* Hide ALL scrollbars app-wide while keeping scroll working */
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
 /* Semantic Badges */
 .badge-verified {
   background-color: #E8F7F3;
